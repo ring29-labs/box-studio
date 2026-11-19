@@ -22,13 +22,22 @@
   <button data-step="2" class="step"><span class="step-dot"></span>Finishing</button>
   <button data-step="3" class="step"><span class="step-dot"></span>Production & pricing</button>
   <button data-step="4" class="step"><span class="step-dot"></span>Review quote</button>
-  <div class="sidebar-bottom"><span class="connected">Labour connected</span><p>One configuration.<br>Materials, time and price.</p><button id="open-project" class="text-button">Open saved configuration</button><button id="save-project" class="text-button">Save configuration</button></div>
+  <div class="sidebar-bottom"><span class="connected">Labour connected</span><p>One configuration.<br>Materials, time and price.</p><a id="open-assistant" class="text-button web-only" href="#assistant">Ask the AI assistant</a><button id="open-project" class="text-button">Open saved configuration</button><button id="save-project" class="text-button">Save configuration</button></div>
  </nav>
  <main id="main" tabindex="-1">
   <div class="page-heading"><div><p class="eyebrow" id="step-context">Rigid packaging · FEFCO 0302</p><h1 id="step-title">Configure your box</h1><p id="step-description" class="muted">A two-piece rigid box with a separate base and lid.</p></div><span class="model-tag">Lid & base</span></div>
   <section id="step-content" aria-labelledby="step-title"></section>
+  <details class="assistant form-card web-only" id="assistant">
+   <summary><span>Configure with the AI assistant</span><span class="mini-tag">AI SDK</span></summary>
+   <p class="hint">Describe your box, ask about finishes, or compare quantities. Review calculated suggestions before applying them.</p>
+   <div class="assistant-examples"><button class="secondary" data-ask="Propose 1,000 boxes, 200 × 150 × 60 mm with a 30 mm lid. Keep my other settings.">1,000 small boxes</button><button class="secondary" data-ask="Compare 500, 1000 and 2000 boxes and explain the production routes.">Compare quantities</button><button class="secondary" data-ask="Explain the difference between gross margin and markup using my current quote.">Explain pricing</button></div>
+   <div id="assistant-messages" class="assistant-messages" role="log" aria-label="Assistant conversation" aria-live="polite"></div>
+   <div id="assistant-proposal" hidden></div>
+   <form id="assistant-form"><label for="assistant-input">What would you like to make?</label><textarea id="assistant-input" rows="3" maxlength="1600" placeholder="A gift box for 1,000 sets, 200 × 150 × 60 mm, with a 30 mm lid…" required></textarea><div class="assistant-send"><span id="assistant-status" role="status"></span><button class="primary" id="assistant-submit" type="submit">Ask assistant</button></div></form>
+   <p class="footnote">When you send a message, your box settings and the last six chat messages go to our server and the AI provider through Vercel AI Gateway. Avoid personal or confidential details. Ordinary form calculations stay on your device. AI suggestions can be wrong; the preview prices come from the Rust calculator.</p>
+  </details>
   <div class="form-footer"><button id="back" class="secondary">Back</button><span id="step-progress" class="muted">Step 1 of 5</span><button id="next" class="primary">Continue</button></div>
-  <section class="demo-note"><strong>About this demo</strong><p>The supplied 2026 workbook prices are included. This is a cost model for review, not a supplier offer. Totals exclude tax; delivery is optional. Configurations stay on this device.</p><a href="demo.mp4" id="watch-demo" class="web-only">Watch the walkthrough</a></section>
+  <section class="demo-note"><strong>About this demo</strong><p>The supplied 2026 workbook prices are included. This is a cost model for review, not a supplier offer. Totals exclude tax; delivery is optional. Saved configurations stay on this device. The optional AI assistant sends settings when you ask it.</p><a href="demo.html" id="watch-demo" class="web-only">Watch the walkthrough</a></section>
  </main>
  <aside class="quote-panel" aria-label="Live quotation">
   <div class="quote-top"><h2>Your estimate</h2><span id="calc-status" role="status">Loading model…</span></div>

@@ -2,7 +2,7 @@
 
 A guided configurator for a 0302 rigid box with a separate lid and base. Dimensions, material selections and finishing drive production labour and the quote automatically. It runs in a browser and as a local Mac app.
 
-The browser uses WebAssembly compiled from the same Rust engine linked into the Mac app. Calculations happen on the user's device. No account, database or model API is required.
+The browser uses WebAssembly compiled from the same Rust engine linked into the Mac app. Ordinary form calculations happen on the user's device. The website also offers an optional assistant built with Vercel AI SDK 7 and AI Gateway; it proposes changes using that same Rust calculator. The offline Mac form does not require an account, database or model API.
 
 ## Quote calculation
 
@@ -20,7 +20,7 @@ The review includes quantity comparisons and the production-process breakdown wi
 
 ## Run the web app
 
-Node.js and Python 3 are sufficient for the checked-in browser build:
+Node.js 22 and Python 3 are sufficient for the checked-in browser build:
 
 ```sh
 npm run build
@@ -28,6 +28,24 @@ npm run preview
 ```
 
 Open `http://127.0.0.1:4178`. The build checks hashes of the Rust source, source workbook data and WebAssembly binary to prevent publishing a stale calculation engine.
+
+The static preview supports the form. To test the server assistant locally, run `npm ci`, configure `AI_GATEWAY_API_KEY` in a private local environment file, and use `vercel dev`. Never commit the key or put it in a `VITE_`, `NEXT_PUBLIC_` or other frontend variable.
+
+## AI configuration assistant and skill
+
+Open **Configure with the AI assistant** below the current form. Describe dimensions, quantity or finishing, or ask it to explain the quote. The assistant can look up exact catalogue values and propose a configuration. Its tool calls run the checked-in Rust WebAssembly engine on the server. A proposal displays the calculated price and changed settings; **Apply to form** updates the local form. If the form changes after the request, the proposal cannot be applied until refreshed.
+
+The default model is `openai/gpt-4.1-mini` through Vercel AI Gateway. A server-only `BOX_ASSISTANT_MODEL` environment variable can select another compatible tool-capable model. `AI_GATEWAY_API_KEY` is a sensitive Vercel production secret. The dedicated demo key was created with a $5 lifetime quota and 90-day expiry; it needs replacement or renewal when exhausted or expired. This is a usage cap, not a prepayment or recurring purchase. The endpoint deliberately requires that key instead of falling back to unbudgeted project OIDC access.
+
+Requests are bounded to four model steps, 1,000 output tokens per step, a 45-second model timeout and at most six prior chat messages. Same-origin checks and a per-instance IP limiter reduce casual abuse; the latter is not a distributed global rate limit. The Gateway key quota is the spend boundary. AI prose remains advisory; calculated preview prices are authoritative for the source model.
+
+When a visitor asks the assistant, current box settings and recent chat are sent to our Vercel function and model provider through Gateway. The app has no chat database. Provider and hosting retention policies still apply. Names and preview colours are not included in configuration requests. Regular form edits, JSON saves and CSV exports remain local.
+
+`skills/box-studio/SKILL.md` is the reusable Codex skill and the server's shared domain instruction source. Install by copying the `box-studio` folder into `~/.codex/skills/`. It contains the engine interface, cost rules, catalogue boundaries and review workflow. The original GridCraft skill and MCP bridge are separate spreadsheet tooling.
+
+## Recorded walkthrough
+
+Open [the walkthrough](https://box-studio.ring29.com/demo.html) for a 65-second recording of the native Mac form, with English captions. It demonstrates dimensions, input validation, materials, foil stamping, hourly cost and quantity comparison. The website's AI assistant was added after that recording.
 
 ## Rebuild the engine
 
@@ -77,4 +95,4 @@ The older Via configurator was inspected to understand its product options and p
 
 ## Deployment
 
-The public repository is `ring29-labs/box-studio`. The Vercel project is `ring29-box-studio`, with `box-studio.ring29.com` as its custom domain. `vercel.json` defines the static build and browser security headers. The server publishes assets; it does not receive configuration values for calculation.
+The public repository is `ring29-labs/box-studio`. The Vercel project is `ring29-box-studio`, with `box-studio.ring29.com` as its custom domain. `vercel.json` defines the static build, the assistant function and browser security headers. Set the sensitive `AI_GATEWAY_API_KEY` production environment variable before deploying. Only explicit assistant requests send configuration values to the server; the form otherwise calculates locally.
