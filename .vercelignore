@@ -1,0 +1,13 @@
+target
+dist
+native
+.git
+.env*
+node_modules
+web/dist
+evidence/*-content.xml
+evidence/*-thumbnail.png
+evidence/box-review.txt
+evidence/*.png
+evidence/*.mov
+evidence/ui-test-*

@@ -1,0 +1,12 @@
+{
+ "name":"ring29-box-studio",
+ "version":"0.2.0",
+ "private":true,
+ "type":"module",
+ "scripts":{
+  "build":"node tools/build-web.mjs",
+  "build:engine":"zsh tools/build-wasm.sh",
+  "test":"cargo test && cargo build --bin verify && node tools/check-web.mjs",
+  "preview":"python3 -m http.server 4178 --directory web/dist --bind 127.0.0.1"
+ }
+}

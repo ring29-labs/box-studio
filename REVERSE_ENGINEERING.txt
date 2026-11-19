@@ -1,0 +1,164 @@
+BOX STUDIO — SOURCE ANALYSIS AND RUNNING THE APP
+19 November 2026
+
+Open dist/Box Studio.app. The Mac application and website display the same
+five-step guided form. The Mac uses WebKit with a native Rust bridge; the
+browser uses the same Rust code compiled to WebAssembly in a local worker.
+Neither calculation path needs a server, account or model API. The Mac build
+targets Apple Silicon and works without a network connection.
+
+The original templates in Downloads are untouched. Separate .ods copies have
+only their OpenDocument package media type changed from template to workbook.
+All content, styles, formulas, images and other package parts are byte-identical
+to their originals. GridCraft 0.19.1 rejects .ots directly. Its .ods importer
+imports saved values only, dropping formulas, styling and other features.
+The first workbook was observed open in the desktop app; the second passed
+the matching CLI importer. The desktop file dialog later stopped responding.
+
+MACROS AND LOGIC
+
+No embedded Basic, VBA or script modules, and no script event handlers were
+found in either template. No document-supplied actions were executed.
+The automation is implemented by 8,317 worksheet formulas across six sheets:
+
+  0302 AUTOMATINĖS         181 formulas
+  0302 PUIAUTOMATINĖS      212 formulas
+  0302 RANKINĖS            196 formulas
+  Box                    3858 formulas
+  Insert                 3833 formulas
+  foam skaiciuokle Martino  37 formulas
+
+Labour model:
+  Running minutes = quantity / units-per-hour * 60 * selected factor.
+  Total process hours = (running minutes + setup minutes) / 60.
+  Process cost = process hours * labour hourly cost.
+  Labour / unit = sum(process costs) / quantity.
+  Labour plus profit / unit adds total hours * profit-per-hour / quantity.
+  Bottleneck throughput uses the selected wrapping processes, not all hours.
+  Helper-worker and packing formulas retain the exact source behavior.
+
+Box/Insert model:
+  Construction + dimensions drive board and wrapping cut sizes.
+  Material selections drive catalogue lookups, sheet sizes and minimum orders.
+  Rotated and unrotated nesting determine sheets required.
+  Printing, finishing, accessories, foam and dies feed material/process costs.
+  Each of nine quantity columns has a separate price and throughput target.
+  Freight uses packaging volume, cartons, pallets and a country tariff table.
+
+The original labour-input row 53 is blank in both quote sheets. Row 52 adds
+it to material cost for cost comparison. Source selling price row 46 comes
+from row 664 and includes the throughput target in row 660; entering row 53
+does NOT change that original selling-price formula.
+
+The NEW guided workflow in src/guided.rs connects the 0302 labour model to
+Box!C53 and uses an explicit replacement selling-price rule:
+  Cost total = Box!C658 + linked production labour + optional Box!C61 delivery.
+  Selling unit price = cost total / quantity / (1 - gross margin).
+  Round the selling unit price UP to the next cent.
+The original throughput target and finishing labour tariffs in rows 633-642
+are not charged again. Those processes are covered by linked production time.
+The original source formulas remain available through the engine's read-only
+analysis API, and their saved-result regression remains unchanged.
+
+Auto routing: automatic for quantities >= 2000 when Box!F25 says it fits;
+otherwise semi-automatic when Box!F30 says it fits; otherwise manual. An
+explicit automatic/semi selection fails if its machine-fit check fails.
+Lining, lamination, foil and emboss/deboss selections map to the corresponding
+labour rows in each mode. Emboss and deboss on the same side count separate
+passes, each including setup. The hourly rate is user-editable. Quantities
+must be positive whole numbers; dimensions must be whole millimetres because
+the source dimensions use 1 mm precision. Invalid or unavailable calculations
+produce errors and suppress the quote rather than returning cached prices.
+
+Only the supplied 0302 lid/base labour is connected. Other constructions and
+insert/foam models are retained in extracted data, not automatically assigned
+0302 labour. The initial exterior paper selection is Multi-art 150 on both
+parts; selecting None warns that the source labour still assumes wrapping.
+
+CALCULATION FIDELITY
+
+The box workbook enables precision-as-shown. The extractor resolves original
+number-format precision (including the two-decimal default), and Rust rounds
+source cells, changed inputs and calculated cells accordingly. Labour uses its
+original full-precision behavior. Explicit OpenDocument text spaces are kept;
+these spaces are essential in concatenated material lookup keys.
+
+Four formulas contain duplicate leading '=' characters: K356 and H408 in
+both Box and Insert. The parser accepts this Calc syntax. Originals remain
+intact. Missing lookups and division errors remain visible; cached results
+are never substituted as a calculation fallback.
+
+Baseline regression result:
+  6,702 of 6,702 numeric formula results match saved results.
+    434 of   434 text formula results match saved results.
+  1,181 existing source errors are reproduced as errors.
+  No parse failures and no unexplained baseline mismatches.
+  Six Calc Err:502 transport errors are normalized to #REF! in Rust.
+
+Matching saved results is evidence of baseline fidelity, not independent
+validation of the underlying commercial model. Many unused material branches
+already contain #N/A or #DIV/0!, and Insert transport exceeds the source tariff
+range for the largest quantities. New selections may expose those errors.
+Source catalogue prices and throughput targets were preserved, not refreshed.
+
+APP USE
+
+Follow Box & quantity, Materials & print, Finishing, Production & pricing, and
+Review quote. The sidebar estimate stays connected throughout. The review
+shows quantity comparisons and labour process costs with source references.
+Light and dark themes and a narrow-screen layout are available.
+
+Save configuration writes a version-2 JSON configuration. Open restores it;
+the old prototype's six-sheet project-file format is not the new format.
+Export quote writes the connected cost/price breakdown as CSV. In the Mac app,
+these use native file dialogs; in the browser they use local files. No source
+template is overwritten, no order is placed, and no quote is sent or uploaded.
+
+Files and source:
+  native/BoxStudio.swift         Mac window, native Rust bridge, file dialogs
+  src/lib.rs                    Rust parser and calculation engine; C FFI
+  src/guided.rs                 Automatic labour connection and pricing rules
+  src/wasm.rs                   Browser memory interface to the same engine
+  web/                          Shared guided form, worker and public demo
+  src/verify.rs                 Regression runner / JSON request utility
+  tools/inspect_templates.py    Read-only OpenDocument extraction
+  tools/build-web.mjs            Static browser build and catalogue choices
+  tools/build-wasm.sh            Rebuild the browser calculation engine
+  tools/check-web.mjs            Native / WebAssembly result comparisons
+  evidence/workbooks.json       Extracted formulas, values, lists and precision
+  evidence/calculation-verification.json  Complete baseline comparison
+
+Build and verification (from this directory):
+  npm run build:engine
+  npm run build
+  zsh tools/build.sh
+  npm test
+  cargo run --offline --bin verify > evidence/calculation-verification.json
+
+The Rust evaluator implements the functions used by these templates; it is
+not a general-purpose replacement for Excel or LibreOffice. It supports their
+current arithmetic, comparisons, local ranges, IF, SUM, MAX, MIN, OR, rounding,
+MOD, VLOOKUP, MATCH, ISNA, ISERROR, SEARCH, CONCATENATE and COUNTIF usage. Future
+formulas or wildcard criteria require explicit implementation and verification.
+The Mac app is locally ad-hoc signed, not an App Store/notarized distribution.
+
+GRIDCRAFT MCP AND SKILL
+
+Installed skill: ~/.codex/skills/gridcraft/SKILL.md
+Source: https://github.com/mroxso/artcraft-skills/tree/main/artcraft/gridcraft
+Skill installed using the skill-installer helper and its validator checked.
+
+Installed CLI:
+  ~/.local/share/gridcraft-cli/0.19.1/
+    gridcraft-cli-0.19.1-macos-universal/gridcraft-cli
+
+Registered global Codex MCP server named gridcraft using `codex mcp add`.
+It runs `gridcraft-cli mcp` as a headless session. An initialize request and
+tools/list succeeded with server version 0.19.1 and 22 tools. This does not
+control an existing desktop window. Desktop MCP requires a running app with
+an authenticated control port and the CLI's --connect option.
+
+The skill is available on the next turn. The app may need a new chat or MCP
+reload to expose the newly registered tools. There is no claim that the current
+chat has hot-loaded them. See evidence/mcp-verification.json for the handshake.
+Official protocol: https://github.com/storytold/gridcraft/blob/main/docs/mcp.md

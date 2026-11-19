@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Box Studio · Ring29</title>
+  <meta name="description" content="Configure a rigid box with connected materials, production labour and transparent quoting.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="catalog.js" defer></script><script src="app.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+ <a class="brand" href="./" aria-label="Box Studio home"><span class="brandmark" aria-hidden="true"></span><span>Ring29 <b>Box Studio</b></span></a>
+ <div class="top-actions"><span class="demo-tag">Public demo</span><button id="theme" class="quiet" aria-label="Switch colour theme">Dark</button><a class="quiet web-only" href="https://github.com/ring29-labs/box-studio" target="_blank" rel="noopener">Source</a></div>
+</header>
+<div class="workspace">
+ <nav class="steps" aria-label="Configuration steps">
+  <p class="eyebrow">Your configuration</p>
+  <button data-step="0" class="step active" aria-current="step"><span class="step-dot"></span>Box & quantity</button>
+  <button data-step="1" class="step"><span class="step-dot"></span>Materials & print</button>
+  <button data-step="2" class="step"><span class="step-dot"></span>Finishing</button>
+  <button data-step="3" class="step"><span class="step-dot"></span>Production & pricing</button>
+  <button data-step="4" class="step"><span class="step-dot"></span>Review quote</button>
+  <div class="sidebar-bottom"><span class="connected">Labour connected</span><p>One configuration.<br>Materials, time and price.</p><button id="open-project" class="text-button">Open saved configuration</button><button id="save-project" class="text-button">Save configuration</button></div>
+ </nav>
+ <main id="main" tabindex="-1">
+  <div class="page-heading"><div><p class="eyebrow" id="step-context">Rigid packaging · FEFCO 0302</p><h1 id="step-title">Configure your box</h1><p id="step-description" class="muted">A two-piece rigid box with a separate base and lid.</p></div><span class="model-tag">Lid & base</span></div>
+  <section id="step-content" aria-labelledby="step-title"></section>
+  <div class="form-footer"><button id="back" class="secondary">Back</button><span id="step-progress" class="muted">Step 1 of 5</span><button id="next" class="primary">Continue</button></div>
+  <section class="demo-note"><strong>About this demo</strong><p>The supplied 2026 workbook prices are included. This is a cost model for review, not a supplier offer. Totals exclude tax; delivery is optional. Configurations stay on this device.</p><a href="demo.mp4" id="watch-demo" class="web-only">Watch the walkthrough</a></section>
+ </main>
+ <aside class="quote-panel" aria-label="Live quotation">
+  <div class="quote-top"><h2>Your estimate</h2><span id="calc-status" role="status">Loading model…</span></div>
+  <div id="box-preview" class="box-preview" aria-label="Box dimension preview"></div>
+  <div id="preview-caption" class="preview-caption"></div>
+  <div id="quote-error" class="error" role="alert" hidden></div>
+  <div id="quote-result">
+   <div class="unit-price"><span id="price" aria-live="polite">—</span><span class="muted">per box · excl. tax</span></div>
+   <div class="quantity-line"><span id="quote-quantity">2,000 boxes</span><strong id="quote-total">—</strong></div>
+   <dl class="cost-lines"><div><dt>Materials & outside services</dt><dd id="material-cost">—</dd></div><div class="labour-line"><dt>Production labour <span class="mini-tag">Auto-linked</span></dt><dd id="labour-cost">—</dd></div><div><dt>Delivery & packaging</dt><dd id="shipping-cost">—</dd></div><div class="cost-total"><dt>Total cost</dt><dd id="total-cost">—</dd></div><div><dt>Gross profit</dt><dd id="profit">—</dd></div></dl>
+   <div class="route-card"><span class="eyebrow">Production route</span><strong id="route">Checking machine fit</strong><p id="route-reason"></p><div><span id="labour-hours">—</span><span id="actual-margin">—</span></div></div>
+   <div id="warnings" class="warnings" role="status"></div>
+  </div>
+  <button id="export-summary" class="secondary full">Export quote CSV</button>
+  <p class="footnote">Live calculation from the original material and labour models. Selling price uses your gross margin.</p>
+ </aside>
+</div>
+<div id="toast" role="status" hidden></div><input id="project-file" type="file" accept=".json,application/json" hidden>
+</body></html>

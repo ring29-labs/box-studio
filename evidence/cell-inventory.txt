@@ -1,0 +1,1179 @@
+0302 Labour cost - 09-02-2026.ots macros: [] events: []
+SHEET 0302 AUTOMATINĖS populated: 331 formulas: 181
+B1 0302 VISI PROCESAI AUTOMATINIAI (tiražams nuo 2000 vnt.)
+D1 Pelnas €/ h
+E1 Pelnas tiražui
+F1 Pagaminama vnt/val.
+G1 Pagaminama vnt/d.
+H1 Apribojimo darbo val.
+I1 Darbo val. kaina su OE
+D2 8
+E2 of:=[.J41]*[.D2]
+F2 of:=[.C3]/([.J17]+[.J18])
+G2 of:=[.F2]*8
+H2 of:=[.J17]+[.J18]
+B3 Kiekis
+C3 2000
+D3  
+I3 22,00
+B4 Gaminio darbo laiko kaštai
+C4 of:=[.K41]
+B5 Gaminio kaina be medžiagų (darbas+pelnas)
+C5 of:=([.K42]+[.E2])/[.C3]
+D5 *skirta pasitikrinimui
+B9 0302 procesai 1-ai dėžutei pagaminti
+F9 VNT / h
+G9 Koeficientas
+H9 Viso min. tiražui
+I9 Pritaisymo minutės
+J9 Viso valandos darbas+pritaisymas
+K9 Proceso kaina vnt €
+L9 Proceso kaina visam kiekiui
+A10 1
+B10 Dėžutės dangtelio roliavimas Max 950x550
+F10 375
+H10 of:=[.C3]/[.F10]*60
+I10 30
+J10 of:=([.I10]+[.H10])/60
+K10 of:=[.L10]/[.C3]
+L10 of:=[.J10]*[.I3]
+A11 2
+B11 Dėžutės dugnelio roliavimas  Max 950x550
+E11 Taip
+F11 375
+G11 of:=IF([.E11]="taip";1;IF([.E11]="ne";0))
+H11 of:=[.C3]/[.F11]*60*[.G11]
+I11 of:=30*[.G11]
+J11 of:=([.I11]+[.H11])/60
+K11 of:=[.L11]/[.C3]
+L11 of:=[.J11]*[.I3]
+A12 3
+B12 Dėžutės DANGTELIO V formos Frezavimas AUTO
+F12 600
+H12 of:=[.C3]/[.F12]*60
+I12 240
+J12 of:=([.I12]+[.H12])/60
+K12 of:=[.L12]/[.C3]
+L12 of:=[.J12]*[.I3]
+A13 4
+B13 Dėžutės DUGNELIO V formos Frezavimas AUTO
+E13 Taip
+F13 600
+G13 of:=IF([.E13]="taip";1;IF([.E13]="ne";0))
+H13 of:=[.C3]/[.F13]*60*[.G13]
+I13 of:=240*[.G13]
+J13 of:=([.I13]+[.H13])/60
+K13 of:=[.L13]/[.C3]
+L13 of:=[.J13]*[.I3]
+A14 5
+B14 Apklijavimo popieriaus supjovimas - Giljotina
+F14 1000
+H14 of:=[.C3]/[.F14]*60
+I14 10
+J14 of:=([.I14]+[.H14])/60
+K14 of:=[.L14]/[.C3]
+L14 of:=[.J14]*[.I3]
+A15 6
+B15 DANGTELIO apklijavimo popieriaus kirtimas su aižymu autotygeliu
+F15 600
+H15 of:=[.C3]/[.F15]*60
+I15 30
+J15 of:=([.I15]+[.H15])/60
+K15 of:=[.L15]/[.C3]
+L15 of:=[.J15]*[.I3]
+A16 7
+B16 DUGNELIO apklijavimo popieriaus kirtimas su aižymu autotygeliu
+E16 Taip
+F16 600
+G16 of:=IF([.E16]="taip";1;IF([.E16]="ne";0))
+H16 of:=[.C3]/[.F16]*60*[.G16]
+I16 of:=30*[.G16]
+J16 of:=([.I16]+[.H16])/60
+K16 of:=[.L16]/[.C3]
+L16 of:=[.J16]*[.I3]
+A17 8
+B17 Dėžutės DANGTELIO apklijavimas automatiniu wrapper'iu
+F17 500
+H17 of:=[.C3]/[.F17]*60
+I17 240
+J17 of:=([.I17]+[.H17])/60
+K17 of:=[.L17]/[.C3]
+L17 of:=[.J17]*[.I3]
+A18 9
+B18 Dėžutės DUGNELIO apklijavimas automatiniu wrapper'iu
+E18 Taip
+F18 500
+G18 of:=IF([.E18]="taip";1;IF([.E18]="ne";0))
+H18 of:=[.C3]/[.F18]*60*[.G18]
+I18 of:=240*[.G18]
+J18 of:=([.I18]+[.H18])/60
+K18 of:=[.L18]/[.C3]
+L18 of:=[.J18]*[.I3]
+A19 10
+B19 Dėžutės DANGTELIO vidaus kaširavimas
+E19 Ne
+F19 500
+G19 of:=IF([.E19]="taip";1;IF([.E19]="ne";0))
+H19 of:=[.C3]/[.F19]*60*[.G19]
+I19 of:=30*[.G19]
+J19 of:=([.I19]+[.H19])/60*[.G19]
+K19 of:=[.L19]/[.C3]
+L19 of:=[.J19]*[.I3]
+A20 11
+B20 Dėžutės DANGTELIO vidaus kaširavimas
+E20 Ne
+F20 500
+G20 of:=IF([.E20]="taip";1;IF([.E20]="ne";0))
+H20 of:=[.C3]/[.F20]*60*[.G20]
+I20 of:=30*[.G20]
+J20 of:=([.I20]+[.H20])/60*[.G20]
+K20 of:=[.L20]/[.C3]
+L20 of:=[.J20]*[.I3]
+A21 12
+B21 Dėžutės išorės laminavimas (dangtelio ir dugnelio)
+E21 Ne
+F21 1000
+G21 of:=IF([.E21]="taip";1;IF([.E21]="ne";0))
+H21 of:=[.C3]/[.F21]*60*[.G21]
+I21 of:=15*[.G21]
+J21 of:=([.I21]+[.H21])/60*[.G21]
+K21 of:=[.L21]/[.C3]
+L21 of:=[.J21]*[.I3]
+A22 12
+B22 Dėžutės vidaus laminavimas (dangtelio ir dugnelio)
+E22 Ne
+F22 1000
+G22 of:=IF([.E22]="taip";1;IF([.E22]="ne";0))
+H22 of:=[.C3]/[.F22]*60*[.G22]
+I22 of:=15*[.G22]
+J22 of:=([.I22]+[.H22])/60*[.G22]
+K22 of:=[.L22]/[.C3]
+L22 of:=[.J22]*[.I3]
+A23 18
+B23 Foiling 
+E23 Ne
+F23 750
+G23 of:=IF([.E23]="taip";1;IF([.E23]="ne";0))
+H23 of:=[.C3]/[.F23]*60*[.G23]
+I23 of:=60*[.G23]
+J23 of:=([.I23]+[.H23])/60*[.G23]
+K23 of:=[.L23]/[.C3]
+L23 of:=[.J23]*[.I3]
+A24 18
+B24 Foiling 
+E24 Ne
+F24 750
+G24 of:=IF([.E24]="taip";1;IF([.E24]="ne";0))
+H24 of:=[.C3]/[.F24]*60*[.G24]
+I24 of:=60*[.G24]
+J24 of:=([.I24]+[.H24])/60*[.G24]
+K24 of:=[.L24]/[.C3]
+L24 of:=[.J24]*[.I3]
+A25 18
+B25 Foiling 
+E25 Ne
+F25 750
+G25 of:=IF([.E25]="taip";1;IF([.E25]="ne";0))
+H25 of:=[.C3]/[.F25]*60*[.G25]
+I25 of:=60*[.G25]
+J25 of:=([.I25]+[.H25])/60*[.G25]
+K25 of:=[.L25]/[.C3]
+L25 of:=[.J25]*[.I3]
+A26 19
+B26 Foiling
+E26 Ne
+F26 750
+G26 of:=IF([.E26]="taip";1;IF([.E26]="ne";0))
+H26 of:=[.C3]/[.F26]*60*[.G26]
+I26 of:=60*[.G26]
+J26 of:=([.I26]+[.H26])/60*[.G26]
+K26 of:=[.L26]/[.C3]
+L26 of:=[.J26]*[.I3]
+A27 20
+B27 Foiling 
+E27 Ne
+F27 750
+G27 of:=IF([.E27]="taip";1;IF([.E27]="ne";0))
+H27 of:=[.C3]/[.F27]*60*[.G27]
+I27 of:=60*[.G27]
+J27 of:=([.I27]+[.H27])/60*[.G27]
+K27 of:=[.L27]/[.C3]
+L27 of:=[.J27]*[.I3]
+A28 21
+B28 3D – Folijavimas/ big foil area/ Emboss/ Deboss
+E28 Ne
+F28 375
+G28 of:=IF([.E28]="taip";1;IF([.E28]="ne";0))
+H28 of:=[.C3]/[.F28]*60*[.G28]
+I28 of:=120*[.G28]
+J28 of:=([.I28]+[.H28])/60*[.G28]
+K28 of:=[.L28]/[.C3]
+L28 of:=[.J28]*[.I3]
+A29 21
+B29 3D – Folijavimas/ big foil area/ Emboss/ Deboss
+E29 Ne
+F29 375
+G29 of:=IF([.E29]="taip";1;IF([.E29]="ne";0))
+H29 of:=[.C3]/[.F29]*60*[.G29]
+I29 of:=120*[.G29]
+J29 of:=([.I29]+[.H29])/60*[.G29]
+K29 of:=[.L29]/[.C3]
+L29 of:=[.J29]*[.I3]
+A30 22
+B30 Kartonines/Platform ideklu formavimas ir Iklijavimas 
+E30 Ne
+F30 60
+G30 of:=IF([.E30]="taip";1;IF([.E30]="ne";0))
+H30 of:=[.C3]/[.F30]*60*[.G30]
+I30 of:=15*[.G30]
+J30 of:=([.I30]+[.H30])/60*[.G30]
+K30 of:=[.L30]/[.C3]
+L30 of:=[.J30]*[.I3]
+A31 22
+B31 Kartonines/Platform ideklu formavimas ir Iklijavimas 
+E31 Ne
+F31 60
+G31 of:=IF([.E31]="taip";1;IF([.E31]="ne";0))
+H31 of:=[.C3]/[.F31]*60*[.G31]
+I31 of:=15*[.G31]
+J31 of:=([.I31]+[.H31])/60*[.G31]
+K31 of:=[.L31]/[.C3]
+L31 of:=[.J31]*[.I3]
+A32 23
+B32 Foam įdėjimas, neklijuotas – platformos įdėjimas
+E32 Ne
+F32 180
+G32 of:=IF([.E32]="taip";1;IF([.E32]="ne";0))
+H32 of:=[.C3]/[.F32]*60*[.G32]
+I32 of:=15*[.G32]
+J32 of:=([.I32]+[.H32])/60*[.G32]
+K32 of:=[.L32]/[.C3]
+L32 of:=[.J32]*[.I3]
+A33 23
+B33 Foam įdėjimas, neklijuotas – platformos įdėjimas
+E33 Ne
+F33 180
+G33 of:=IF([.E33]="taip";1;IF([.E33]="ne";0))
+H33 of:=[.C3]/[.F33]*60*[.G33]
+I33 of:=15*[.G33]
+J33 of:=([.I33]+[.H33])/60*[.G33]
+K33 of:=[.L33]/[.C3]
+L33 of:=[.J33]*[.I3]
+A34 24
+B34 Foam ir platformos įdėjimas bei klijavimas
+E34 Ne
+F34 60
+G34 of:=IF([.E34]="taip";1;IF([.E34]="ne";0))
+H34 of:=[.C3]/[.F34]*60*[.G34]
+I34 of:=15*[.G34]
+J34 of:=([.I34]+[.H34])/60*[.G34]
+K34 of:=[.L34]/[.C3]
+L34 of:=[.J34]*[.I3]
+A35 24
+B35 Foam ir platformos įdėjimas bei klijavimas
+E35 Ne
+F35 60
+G35 of:=IF([.E35]="taip";1;IF([.E35]="ne";0))
+H35 of:=[.C3]/[.F35]*60*[.G35]
+I35 of:=15*[.G35]
+J35 of:=([.I35]+[.H35])/60*[.G35]
+K35 of:=[.L35]/[.C3]
+L35 of:=[.J35]*[.I3]
+A36 24
+B36 Iš kelių sluoksnių sudaryto Foam įdėjimas ir klijavimas
+E36 Ne
+F36 20
+G36 of:=IF([.E36]="taip";1;IF([.E36]="ne";0))
+H36 of:=[.C3]/[.F36]*60*[.G36]
+I36 of:=15*[.G36]
+J36 of:=([.I36]+[.H36])/60*[.G36]
+K36 of:=[.L36]/[.C3]
+L36 of:=[.J36]*[.I3]
+A37 24
+B37 Įdėjimas į polietileno maišus
+E37 Ne
+F37 200
+G37 of:=IF([.E37]="taip";1;IF([.E37]="ne";0))
+H37 of:=[.C3]/[.F37]*60*[.G37]
+I37 of:=15*[.G37]
+J37 of:=([.I37]+[.H37])/60*[.G37]
+K37 of:=[.L37]/[.C3]
+L37 of:=[.J37]*[.I3]
+A39 18
+B39 Pagalbinis darbuotojas prie Auto paklijavimo
+E39 1
+F39 of:=[.F17]*[.E39]
+H39 of:=[.C3]/[.F39]*60
+J39 of:=[.H39]/60
+K39 of:=[.L39]/[.C3]
+L39 of:=[.J39]*[.I3]
+A40 17
+B40 Pakavimas
+E40 1
+F40 250
+G40 1
+H40 of:=[.C3]/[.F40]*60
+I40 10
+J40 of:=([.I40]+[.H40])/60
+K40 of:=[.L40]/[.C3]
+L40 of:=[.J40]*[.I3]
+C41 VISO:
+H41 of:=SUM([.H10:.H40])+SUM([.I10:.I40])
+I41 Min.
+J41 of:=SUM([.J10:.J40])
+K41 of:=SUM([.K10:.K40])
+L41 of:=SUM([.L10:.L40])
+H42 of:=[.H41]/60
+I42 Val.
+K42 of:=[.H42]*[.I3]
+B43 Visas tiražas pasigamintų per Apribojimą (automatinės dėžučių staklės) per: 
+E43 of:=[.C3]/[.F2]
+F43 of:=[.E43]/8
+E44 Valandas
+F44 Pamainas
+SHEET 0302 PUIAUTOMATINĖS populated: 386 formulas: 212
+B1 0302 KAI KURIE PROCESAI PUSIAU AUTOMATINIAI (tiražams iki 2000 vnt.)
+D1 Pelnas €/ h
+E1 Pelnas tiražui
+F1 Pagaminama vnt/val.
+G1 Pagaminama vnt/d.
+H1 Apribojimo darbo val.
+I1 Darbo val. kaina su OE
+L1 pelnas dezutei
+M1 €/h
+N1 €/diena
+O1 €/men
+P1 €/metus
+D2 10
+E2 of:=[.J46]*[.D2]
+F2 of:=[.C3]/([.J21]+[.J22])
+G2 of:=[.F2]*8
+H2 of:=[.J21]+[.J22]
+L2 of:=[.C5]-[.C4]
+M2 of:=[.L2]*[.F2]
+N2 of:=[.M2]*8
+O2 of:=[.N2]*21
+P2 of:=[.O2]*12
+B3 Kiekis
+C3 1500
+I3 22,00
+B4 Gaminio darbo laiko kaštai
+C4 of:=[.K46]
+B5 Gaminio kaina be medžiagų (darbas+pelnas)
+C5 of:=([.K47]+[.E2])/[.C3]
+D5 *skirta pasitikrinimui
+B9 0302 procesai 1-ai dėžutei pagaminti
+F9 VNT / h
+G9 Koeficientas
+H9 Viso min. tiražui
+I9 Pritaisymo minutės
+J9 Viso valandos darbas+pritaisymas
+K9 Proceso kaina vnt €
+L9 Proceso kaina visam kiekiui
+A10 1
+B10 Dėžutės dangtelio roliavimas
+F10 375
+H10 of:=[.C3]/[.F10]*60
+I10 30
+J10 of:=([.I10]+[.H10])/60
+K10 of:=[.L10]/[.C3]
+L10 of:=[.J10]*[.I3]
+A11 2
+B11 Dėžutės dugnelio roliavimas
+E11 Taip
+F11 375
+G11 of:=IF([.E11]="taip";1;IF([.E11]="ne";0))
+H11 of:=[.C3]/[.F11]*60*[.G11]
+I11 of:=30*[.G11]
+J11 of:=([.I11]+[.H11])/60
+K11 of:=[.L11]/[.C3]
+L11 of:=[.J11]*[.I3]
+A12 3
+B12 Dėžutės DANGTELIO V formos Frezavimas
+F12 600
+H12 of:=[.C3]/[.F12]*60
+I12 30
+J12 of:=([.I12]+[.H12])/60
+K12 of:=[.L12]/[.C3]
+L12 of:=[.J12]*[.I3]
+A13 4
+B13 Dėžutės DUGNELIO V formos Frezavimas 
+E13 Taip
+F13 600
+G13 of:=IF([.E13]="taip";1;IF([.E13]="ne";0))
+H13 of:=[.C3]/[.F13]*60*[.G13]
+I13 of:=30*[.G13]
+J13 of:=([.I13]+[.H13])/60
+K13 of:=[.L13]/[.C3]
+L13 of:=[.J13]*[.I3]
+A14 5
+B14 Dėžutės DANGTELIO kampų išpjovimas
+F14 400
+H14 of:=[.C3]/[.F14]*60
+I14 10
+J14 of:=([.I14]+[.H14])/60
+K14 of:=[.L14]/[.C3]
+L14 of:=[.J14]*[.I3]
+A15 6
+B15 Dėžutės DUGNELIO kampų išpjovimas
+E15 Taip
+F15 400
+G15 of:=IF([.E15]="taip";1;IF([.E15]="ne";0))
+H15 of:=[.C3]/[.F15]*60*[.G15]
+I15 of:=10*[.G15]
+J15 of:=([.I15]+[.H15])/60
+K15 of:=[.L15]/[.C3]
+L15 of:=[.J15]*[.I3]
+A16 7
+B16 Dėžutės DANGTELIO kampukų rankinis suklijavimas juostele
+F16 500
+H16 of:=[.C3]/[.F16]*60
+I16 5
+J16 of:=([.I16]+[.H16])/60
+K16 of:=[.L16]/[.C3]
+L16 of:=[.J16]*[.I3]
+A17 8
+B17 Dėžutės DUGNELIO kampukų rankinis suklijavimas juostele
+E17 Taip
+F17 500
+G17 of:=IF([.E17]="taip";1;IF([.E17]="ne";0))
+H17 of:=[.C3]/[.F17]*60*[.G17]
+I17 of:=5*[.G17]
+J17 of:=([.I17]+[.H17])/60
+K17 of:=[.L17]/[.C3]
+L17 of:=[.J17]*[.I3]
+A18 9
+B18 Apklijavimo popieriaus supjovimas - Giljotina
+F18 1000
+H18 of:=[.C3]/[.F18]*60
+I18 10
+J18 of:=([.I18]+[.H18])/60
+K18 of:=[.L18]/[.C3]
+L18 of:=[.J18]*[.I3]
+A19 10
+B19 DANGTELIO apklijavimo popieriaus kirtimas su aižymu autotygeliu
+F19 600
+H19 of:=[.C3]/[.F19]*60
+I19 30
+J19 of:=([.I19]+[.H19])/60
+K19 of:=[.L19]/[.C3]
+L19 of:=[.J19]*[.I3]
+A20 11
+B20 DUGNELIO apklijavimo popieriaus kirtimas su aižymu autotygeliu
+E20 Taip
+F20 600
+G20 of:=IF([.E20]="taip";1;IF([.E20]="ne";0))
+H20 of:=[.C3]/[.F20]*60*[.G20]
+I20 of:=30*[.G20]
+J20 of:=([.I20]+[.H20])/60
+K20 of:=[.L20]/[.C3]
+L20 of:=[.J20]*[.I3]
+A21 12
+B21 Dėžutės DANGTELIO apklijavimas pusiau automatiniu wrapper'iu
+F21 300
+H21 of:=[.C3]/[.F21]*60
+I21 30
+J21 of:=([.I21]+[.H21])/60
+K21 of:=[.L21]/[.C3]
+L21 of:=[.J21]*[.I3]
+A22 13
+B22 Dėžutės DUGNELIO apklijavimas pusiau automatiniu wrapper'iu
+E22 Taip
+F22 300
+G22 of:=IF([.E22]="taip";1;IF([.E22]="ne";0))
+H22 of:=[.C3]/[.F22]*60*[.G22]
+I22 of:=30*[.G22]
+J22 of:=([.I22]+[.H22])/60
+K22 of:=[.L22]/[.C3]
+L22 of:=[.J22]*[.I3]
+A23 14
+B23 Dėžutės DANGTELIO vidaus kaširavimas
+E23 Ne
+F23 500
+G23 of:=IF([.E23]="taip";1;IF([.E23]="ne";0))
+H23 of:=[.C3]/[.F23]*60*[.G23]
+I23 of:=30*[.G23]
+J23 of:=([.I23]+[.H23])/60*[.G23]
+K23 of:=[.L23]/[.C3]
+L23 of:=[.J23]*[.I3]
+A24 15
+B24 Dėžutės DUGNELIO vidaus kaširavimas
+E24 Ne
+F24 500
+G24 of:=IF([.E24]="taip";1;IF([.E24]="ne";0))
+H24 of:=[.C3]/[.F24]*60*[.G24]
+I24 of:=30*[.G24]
+J24 of:=([.I24]+[.H24])/60*[.G24]
+K24 of:=[.L24]/[.C3]
+L24 of:=[.J24]*[.I3]
+A25 16
+B25 Dėžutės išorės laminavimas (dangtelio ir dugnelio)
+E25 Ne
+F25 1000
+G25 of:=IF([.E25]="taip";1;IF([.E25]="ne";0))
+H25 of:=[.C3]/[.F25]*60*[.G25]
+I25 of:=15*[.G25]
+J25 of:=([.I25]+[.H25])/60*[.G25]
+K25 of:=[.L25]/[.C3]
+L25 of:=[.J25]*[.I3]
+A26 17
+B26 Dėžutės vidaus laminavimas (dangtelio ir dugnelio)
+E26 Ne
+F26 1000
+G26 of:=IF([.E26]="taip";1;IF([.E26]="ne";0))
+H26 of:=[.C3]/[.F26]*60*[.G26]
+I26 of:=15*[.G26]
+J26 of:=([.I26]+[.H26])/60*[.G26]
+K26 of:=[.L26]/[.C3]
+L26 of:=[.J26]*[.I3]
+A27 17
+B27 Jei naudojama soft touch laminacija – pridėti papildomą pagalbininką
+E27 Ne
+F27 600
+G27 of:=IF([.E27]="taip";1;IF([.E27]="ne";0))
+H27 of:=[.C3]/[.F27]*60*[.G27]
+I27 of:=15*[.G27]
+J27 of:=([.I27]+[.H27])/60*[.G27]
+K27 of:=[.L27]/[.C3]
+L27 of:=[.J27]*[.I3]
+A28 18
+B28 Foiling 
+E28 Ne
+F28 750
+G28 of:=IF([.E28]="taip";1;IF([.E28]="ne";0))
+H28 of:=[.C3]/[.F28]*60*[.G28]
+I28 of:=60*[.G28]
+J28 of:=([.I28]+[.H28])/60*[.G28]
+K28 of:=[.L28]/[.C3]
+L28 of:=[.J28]*[.I3]
+A29 18
+B29 Foiling 
+E29 Ne
+F29 750
+G29 of:=IF([.E29]="taip";1;IF([.E29]="ne";0))
+H29 of:=[.C3]/[.F29]*60*[.G29]
+I29 of:=60*[.G29]
+J29 of:=([.I29]+[.H29])/60*[.G29]
+K29 of:=[.L29]/[.C3]
+L29 of:=[.J29]*[.I3]
+A30 18
+B30 Foiling 
+E30 Ne
+F30 750
+G30 of:=IF([.E30]="taip";1;IF([.E30]="ne";0))
+H30 of:=[.C3]/[.F30]*60*[.G30]
+I30 of:=60*[.G30]
+J30 of:=([.I30]+[.H30])/60*[.G30]
+K30 of:=[.L30]/[.C3]
+L30 of:=[.J30]*[.I3]
+A31 19
+B31 Foiling
+E31 Ne
+F31 750
+G31 of:=IF([.E31]="taip";1;IF([.E31]="ne";0))
+H31 of:=[.C3]/[.F31]*60*[.G31]
+I31 of:=60*[.G31]
+J31 of:=([.I31]+[.H31])/60*[.G31]
+K31 of:=[.L31]/[.C3]
+L31 of:=[.J31]*[.I3]
+A32 20
+B32 Foiling 
+E32 Ne
+F32 750
+G32 of:=IF([.E32]="taip";1;IF([.E32]="ne";0))
+H32 of:=[.C3]/[.F32]*60*[.G32]
+I32 of:=60*[.G32]
+J32 of:=([.I32]+[.H32])/60*[.G32]
+K32 of:=[.L32]/[.C3]
+L32 of:=[.J32]*[.I3]
+A33 21
+B33 3D – Folijavimas/ big foil area/ Emboss/ Deboss
+E33 Ne
+F33 375
+G33 of:=IF([.E33]="taip";1;IF([.E33]="ne";0))
+H33 of:=[.C3]/[.F33]*60*[.G33]
+I33 of:=120*[.G33]
+J33 of:=([.I33]+[.H33])/60*[.G33]
+K33 of:=[.L33]/[.C3]
+L33 of:=[.J33]*[.I3]
+A34 21
+B34 3D – Folijavimas/ big foil area/ Emboss/ Deboss
+E34 Ne
+F34 375
+G34 of:=IF([.E34]="taip";1;IF([.E34]="ne";0))
+H34 of:=[.C3]/[.F34]*60*[.G34]
+I34 of:=120*[.G34]
+J34 of:=([.I34]+[.H34])/60*[.G34]
+K34 of:=[.L34]/[.C3]
+L34 of:=[.J34]*[.I3]
+A35 22
+B35 Kartonines/Platform ideklu formavimas ir Iklijavimas 
+E35 Ne
+F35 60
+G35 of:=IF([.E35]="taip";1;IF([.E35]="ne";0))
+H35 of:=[.C3]/[.F35]*60*[.G35]
+I35 of:=15*[.G35]
+J35 of:=([.I35]+[.H35])/60*[.G35]
+K35 of:=[.L35]/[.C3]
+L35 of:=[.J35]*[.I3]
+A36 22
+B36 Kartonines/Platform ideklu formavimas ir Iklijavimas 
+E36 Ne
+F36 60
+G36 of:=IF([.E36]="taip";1;IF([.E36]="ne";0))
+H36 of:=[.C3]/[.F36]*60*[.G36]
+I36 of:=15*[.G36]
+J36 of:=([.I36]+[.H36])/60*[.G36]
+K36 of:=[.L36]/[.C3]
+L36 of:=[.J36]*[.I3]
+A37 23
+B37 Foam įdėjimas, neklijuotas – platformos įdėjimas
+E37 Ne
+F37 180
+G37 of:=IF([.E37]="taip";1;IF([.E37]="ne";0))
+H37 of:=[.C3]/[.F37]*60*[.G37]
+I37 of:=15*[.G37]
+J37 of:=([.I37]+[.H37])/60*[.G37]
+K37 of:=[.L37]/[.C3]
+L37 of:=[.J37]*[.I3]
+A38 23
+B38 Foam įdėjimas, neklijuotas – platformos įdėjimas
+E38 Ne
+F38 180
+G38 of:=IF([.E38]="taip";1;IF([.E38]="ne";0))
+H38 of:=[.C3]/[.F38]*60*[.G38]
+I38 of:=15*[.G38]
+J38 of:=([.I38]+[.H38])/60*[.G38]
+K38 of:=[.L38]/[.C3]
+L38 of:=[.J38]*[.I3]
+A39 24
+B39 Foam ir platformos įdėjimas bei klijavimas
+E39 Ne
+F39 60
+G39 of:=IF([.E39]="taip";1;IF([.E39]="ne";0))
+H39 of:=[.C3]/[.F39]*60*[.G39]
+I39 of:=15*[.G39]
+J39 of:=([.I39]+[.H39])/60*[.G39]
+K39 of:=[.L39]/[.C3]
+L39 of:=[.J39]*[.I3]
+A40 24
+B40 Foam ir platformos įdėjimas bei klijavimas
+E40 Ne
+F40 60
+G40 of:=IF([.E40]="taip";1;IF([.E40]="ne";0))
+H40 of:=[.C3]/[.F40]*60*[.G40]
+I40 of:=15*[.G40]
+J40 of:=([.I40]+[.H40])/60*[.G40]
+K40 of:=[.L40]/[.C3]
+L40 of:=[.J40]*[.I3]
+A41 24
+B41 Iš kelių sluoksnių sudaryto Foam įdėjimas ir klijavimas
+E41 Ne
+F41 20
+G41 of:=IF([.E41]="taip";1;IF([.E41]="ne";0))
+H41 of:=[.C3]/[.F41]*60*[.G41]
+I41 of:=15*[.G41]
+J41 of:=([.I41]+[.H41])/60*[.G41]
+K41 of:=[.L41]/[.C3]
+L41 of:=[.J41]*[.I3]
+A42 24
+B42 Įdėjimas į polietileno maišus
+E42 Ne
+F42 200
+G42 of:=IF([.E42]="taip";1;IF([.E42]="ne";0))
+H42 of:=[.C3]/[.F42]*60*[.G42]
+I42 of:=15*[.G42]
+J42 of:=([.I42]+[.H42])/60*[.G42]
+K42 of:=[.L42]/[.C3]
+L42 of:=[.J42]*[.I3]
+A44 21
+B44 Pagalbiniai darbuotojai prie pusiau automatinio wrapper'io (pritrynėjas, nurinkėjas)
+E44 2
+F44 of:=[.F21]*[.E44]
+H44 of:=[.C3]/[.F44]*60
+J44 of:=[.H44]/60
+K44 of:=[.L44]/[.C3]
+L44 of:=[.J44]*[.I3]
+A45 22
+B45 Pakavimas
+E45 1
+F45 250
+G45 1
+H45 of:=[.C3]/[.F45]*60
+I45 10
+J45 of:=([.I45]+[.H45])/60
+K45 of:=[.L45]/[.C3]
+L45 of:=[.J45]*[.I3]
+C46 VISO:
+H46 of:=SUM([.H10:.H45])+SUM([.I10:.I45])
+I46 Min.
+J46 of:=SUM([.J10:.J45])
+K46 of:=SUM([.K10:.K45])
+L46 of:=SUM([.L10:.L45])
+B47 Visas tiražas pasigamintų per Apribojimą (pusiau automatinės dėžučių staklės) per:   
+E47 of:=[.C3]/[.F2]
+F47 of:=[.E47]/8
+H47 of:=[.H46]/60
+I47 Val.
+K47 of:=[.H47]*[.I3]
+E48 Valandas
+F48 Pamainas
+SHEET 0302 RANKINĖS populated: 360 formulas: 196
+B1 0302 ALL PROCESSES MANUALS (non-standard and quantities up to 100 pieces) 
+
+D1 Profit €/ h
+E1 Profit per print run
+F1 Units produced/hr.
+G1 Production pcs/d.
+H1 Restriction working hours
+I1 Working hours cost with OE
+
+D2 15
+E2 of:=[.J44]*[.D2]
+F2 of:=[.C3]/([.J21]+[.J22]+[.J42])
+G2 of:=[.F2]*8
+H2 of:=[.J21]+[.J22]+[.J42]
+B3 Quantity
+C3 100
+I3 22,00
+B4 Product labour time costs
+C4 of:=[.K44]
+B5 Product price excluding materials (labour+money)
+C5 of:=([.K45]+[.E2])/[.C3]
+D5 *skirta pasitikrinimui
+B9 0302 processes to produce 1 box
+F9 VNT / h
+G9 Koeficientas
+H9 Total min. print run
+I9 Attachment minutes
+J9 Full hour work+repair
+K9 Process cost pcs €
+L9 Process cost for the total quantity
+A10 1
+B10 Dėžutės dangtelio roliavimas
+F10 375
+H10 of:=[.C3]/[.F10]*60
+I10 30
+J10 of:=([.I10]+[.H10])/60
+K10 of:=[.L10]/[.C3]
+L10 of:=[.J10]*[.I3]
+A11 2
+B11 Dėžutės dugnelio roliavimas
+E11 Taip
+F11 375
+G11 of:=IF([.E11]="taip";1;IF([.E11]="ne";0))
+H11 of:=[.C3]/[.F11]*60*[.G11]
+I11 of:=30*[.G11]
+J11 of:=([.I11]+[.H11])/60
+K11 of:=[.L11]/[.C3]
+L11 of:=[.J11]*[.I3]
+A12 3
+B12 Dėžutės DANGTELIO V formos Frezavimas
+F12 600
+H12 of:=[.C3]/[.F12]*60
+I12 30
+J12 of:=([.I12]+[.H12])/60
+K12 of:=[.L12]/[.C3]
+L12 of:=[.J12]*[.I3]
+A13 4
+B13 Dėžutės DUGNELIO V formos Frezavimas 
+E13 Taip
+F13 600
+G13 of:=IF([.E13]="taip";1;IF([.E13]="ne";0))
+H13 of:=[.C3]/[.F13]*60*[.G13]
+I13 of:=30*[.G13]
+J13 of:=([.I13]+[.H13])/60
+K13 of:=[.L13]/[.C3]
+L13 of:=[.J13]*[.I3]
+A14 5
+B14 Dėžutės DANGTELIO kampų išpjovimas
+F14 400
+H14 of:=[.C3]/[.F14]*60
+I14 10
+J14 of:=([.I14]+[.H14])/60
+K14 of:=[.L14]/[.C3]
+L14 of:=[.J14]*[.I3]
+A15 6
+B15 Dėžutės DUGNELIO kampų išpjovimas
+E15 Taip
+F15 400
+G15 of:=IF([.E15]="taip";1;IF([.E15]="ne";0))
+H15 of:=[.C3]/[.F15]*60*[.G15]
+I15 of:=10*[.G15]
+J15 of:=([.I15]+[.H15])/60
+K15 of:=[.L15]/[.C3]
+L15 of:=[.J15]*[.I3]
+A16 7
+B16 Dėžutės DANGTELIO kampukų rankinis suklijavimas juostele
+F16 500
+H16 of:=[.C3]/[.F16]*60
+I16 5
+J16 of:=([.I16]+[.H16])/60
+K16 of:=[.L16]/[.C3]
+L16 of:=[.J16]*[.I3]
+A17 8
+B17 Dėžutės DUGNELIO kampukų rankinis suklijavimas juostele
+E17 Taip
+F17 500
+G17 of:=IF([.E17]="taip";1;IF([.E17]="ne";0))
+H17 of:=[.C3]/[.F17]*60*[.G17]
+I17 of:=5*[.G17]
+J17 of:=([.I17]+[.H17])/60
+K17 of:=[.L17]/[.C3]
+L17 of:=[.J17]*[.I3]
+A18 9
+B18 Apklijavimo popieriaus supjovimas - Giljotina
+F18 1000
+H18 of:=[.C3]/[.F18]*60
+I18 10
+J18 of:=([.I18]+[.H18])/60
+K18 of:=[.L18]/[.C3]
+L18 of:=[.J18]*[.I3]
+A19 10
+B19 DANGTELIO apklijavimo popieriaus kirtimas su aižymu autotygeliu
+F19 600
+H19 of:=[.C3]/[.F19]*60
+I19 30
+J19 of:=([.I19]+[.H19])/60
+K19 of:=[.L19]/[.C3]
+L19 of:=[.J19]*[.I3]
+A20 11
+B20 DUGNELIO apklijavimo popieriaus kirtimas su aižymu autotygeliu
+E20 Taip
+F20 600
+G20 of:=IF([.E20]="taip";1;IF([.E20]="ne";0))
+H20 of:=[.C3]/[.F20]*60*[.G20]
+I20 of:=30*[.G20]
+J20 of:=([.I20]+[.H20])/60
+K20 of:=[.L20]/[.C3]
+L20 of:=[.J20]*[.I3]
+A21 12
+B21 Dėžutės DANGTELIO apklijavimas rankiniu būdu su šaltais klijais
+F21 25
+H21 of:=[.C3]/[.F21]*60
+I21 10
+J21 of:=([.I21]+[.H21])/60
+K21 of:=[.L21]/[.C3]
+L21 of:=[.J21]*[.I3]
+A22 13
+B22 Dėžutės DUGNELIO apklijavimas rankiniu būdu su šaltais klijais
+E22 Taip
+F22 25
+G22 of:=IF([.E22]="taip";1;IF([.E22]="ne";0))
+H22 of:=[.C3]/[.F22]*60*[.G22]
+I22 of:=10*[.G22]
+J22 of:=([.I22]+[.H22])/60
+K22 of:=[.L22]/[.C3]
+L22 of:=[.J22]*[.I3]
+A23 14
+B23 Dėžutės DANGTELIO vidaus kaširavimas
+E23 Ne
+F23 100
+G23 of:=IF([.E23]="taip";1;IF([.E23]="ne";0))
+H23 of:=[.C3]/[.F23]*60*[.G23]
+I23 of:=30*[.G23]
+J23 of:=([.I23]+[.H23])/60*[.G23]
+K23 of:=[.L23]/[.C3]
+L23 of:=[.J23]*[.I3]
+A24 15
+B24 Dėžutės DUGNELIO vidaus kaširavimas
+E24 Ne
+F24 100
+G24 of:=IF([.E24]="taip";1;IF([.E24]="ne";0))
+H24 of:=[.C3]/[.F24]*60*[.G24]
+I24 of:=30*[.G24]
+J24 of:=([.I24]+[.H24])/60*[.G24]
+K24 of:=[.L24]/[.C3]
+L24 of:=[.J24]*[.I3]
+A25 16
+B25 Dėžutės išorės laminavimas (dangtelio ir dugnelio)
+E25 Ne
+F25 1000
+G25 of:=IF([.E25]="taip";1;IF([.E25]="ne";0))
+H25 of:=[.C3]/[.F25]*60*[.G25]
+I25 of:=15*[.G25]
+J25 of:=([.I25]+[.H25])/60*[.G25]
+K25 of:=[.L25]/[.C3]
+L25 of:=[.J25]*[.I3]
+A26 17
+B26 Dėžutės vidaus laminavimas (dangtelio ir dugnelio)
+E26 Ne
+F26 1000
+G26 of:=IF([.E26]="taip";1;IF([.E26]="ne";0))
+H26 of:=[.C3]/[.F26]*60*[.G26]
+I26 of:=15*[.G26]
+J26 of:=([.I26]+[.H26])/60*[.G26]
+K26 of:=[.L26]/[.C3]
+L26 of:=[.J26]*[.I3]
+A27 18
+B27 Foiling 
+E27 Ne
+F27 750
+G27 of:=IF([.E27]="taip";1;IF([.E27]="ne";0))
+H27 of:=[.C3]/[.F27]*60*[.G27]
+I27 of:=60*[.G27]
+J27 of:=([.I27]+[.H27])/60*[.G27]
+K27 of:=[.L27]/[.C3]
+L27 of:=[.J27]*[.I3]
+A28 18
+B28 Foiling 
+E28 Ne
+F28 750
+G28 of:=IF([.E28]="taip";1;IF([.E28]="ne";0))
+H28 of:=[.C3]/[.F28]*60*[.G28]
+I28 of:=60*[.G28]
+J28 of:=([.I28]+[.H28])/60*[.G28]
+K28 of:=[.L28]/[.C3]
+L28 of:=[.J28]*[.I3]
+A29 18
+B29 Foiling 
+E29 Ne
+F29 750
+G29 of:=IF([.E29]="taip";1;IF([.E29]="ne";0))
+H29 of:=[.C3]/[.F29]*60*[.G29]
+I29 of:=60*[.G29]
+J29 of:=([.I29]+[.H29])/60*[.G29]
+K29 of:=[.L29]/[.C3]
+L29 of:=[.J29]*[.I3]
+A30 19
+B30 Foiling
+E30 Ne
+F30 750
+G30 of:=IF([.E30]="taip";1;IF([.E30]="ne";0))
+H30 of:=[.C3]/[.F30]*60*[.G30]
+I30 of:=60*[.G30]
+J30 of:=([.I30]+[.H30])/60*[.G30]
+K30 of:=[.L30]/[.C3]
+L30 of:=[.J30]*[.I3]
+A31 20
+B31 Foiling 
+E31 Ne
+F31 750
+G31 of:=IF([.E31]="taip";1;IF([.E31]="ne";0))
+H31 of:=[.C3]/[.F31]*60*[.G31]
+I31 of:=60*[.G31]
+J31 of:=([.I31]+[.H31])/60*[.G31]
+K31 of:=[.L31]/[.C3]
+L31 of:=[.J31]*[.I3]
+A32 21
+B32 3D – Folijavimas/ big foil area/ Emboss/ Deboss
+E32 Ne
+F32 375
+G32 of:=IF([.E32]="taip";1;IF([.E32]="ne";0))
+H32 of:=[.C3]/[.F32]*60*[.G32]
+I32 of:=120*[.G32]
+J32 of:=([.I32]+[.H32])/60*[.G32]
+K32 of:=[.L32]/[.C3]
+L32 of:=[.J32]*[.I3]
+A33 21
+B33 3D – Folijavimas/ big foil area/ Emboss/ Deboss
+E33 Ne
+F33 375
+G33 of:=IF([.E33]="taip";1;IF([.E33]="ne";0))
+H33 of:=[.C3]/[.F33]*60*[.G33]
+I33 of:=120*[.G33]
+J33 of:=([.I33]+[.H33])/60*[.G33]
+K33 of:=[.L33]/[.C3]
+L33 of:=[.J33]*[.I3]
+A34 22
+B34 Kartonines/Platform ideklu formavimas ir Iklijavimas 
+E34 Ne
+F34 60
+G34 of:=IF([.E34]="taip";1;IF([.E34]="ne";0))
+H34 of:=[.C3]/[.F34]*60*[.G34]
+I34 of:=15*[.G34]
+J34 of:=([.I34]+[.H34])/60*[.G34]
+K34 of:=[.L34]/[.C3]
+L34 of:=[.J34]*[.I3]
+A35 22
+B35 Kartonines/Platform ideklu formavimas ir Iklijavimas 
+E35 Ne
+F35 60
+G35 of:=IF([.E35]="taip";1;IF([.E35]="ne";0))
+H35 of:=[.C3]/[.F35]*60*[.G35]
+I35 of:=15*[.G35]
+J35 of:=([.I35]+[.H35])/60*[.G35]
+K35 of:=[.L35]/[.C3]
+L35 of:=[.J35]*[.I3]
+A36 23
+B36 Foam įdėjimas, neklijuotas – platformos įdėjimas
+E36 Ne
+F36 180
+G36 of:=IF([.E36]="taip";1;IF([.E36]="ne";0))
+H36 of:=[.C3]/[.F36]*60*[.G36]
+I36 of:=15*[.G36]
+J36 of:=([.I36]+[.H36])/60*[.G36]
+K36 of:=[.L36]/[.C3]
+L36 of:=[.J36]*[.I3]
+A37 23
+B37 Foam įdėjimas, neklijuotas – platformos įdėjimas
+E37 Ne
+F37 180
+G37 of:=IF([.E37]="taip";1;IF([.E37]="ne";0))
+H37 of:=[.C3]/[.F37]*60*[.G37]
+I37 of:=15*[.G37]
+J37 of:=([.I37]+[.H37])/60*[.G37]
+K37 of:=[.L37]/[.C3]
+L37 of:=[.J37]*[.I3]
+A38 24
+B38 Foam ir platformos įdėjimas bei klijavimas
+E38 Ne
+F38 60
+G38 of:=IF([.E38]="taip";1;IF([.E38]="ne";0))
+H38 of:=[.C3]/[.F38]*60*[.G38]
+I38 of:=15*[.G38]
+J38 of:=([.I38]+[.H38])/60*[.G38]
+K38 of:=[.L38]/[.C3]
+L38 of:=[.J38]*[.I3]
+A39 24
+B39 Foam ir platformos įdėjimas bei klijavimas
+E39 Ne
+F39 60
+G39 of:=IF([.E39]="taip";1;IF([.E39]="ne";0))
+H39 of:=[.C3]/[.F39]*60*[.G39]
+I39 of:=15*[.G39]
+J39 of:=([.I39]+[.H39])/60*[.G39]
+K39 of:=[.L39]/[.C3]
+L39 of:=[.J39]*[.I3]
+A40 24
+B40 Iš kelių sluoksnių sudaryto Foam įdėjimas ir klijavimas
+E40 Ne
+F40 20
+G40 of:=IF([.E40]="taip";1;IF([.E40]="ne";0))
+H40 of:=[.C3]/[.F40]*60*[.G40]
+I40 of:=15*[.G40]
+J40 of:=([.I40]+[.H40])/60*[.G40]
+K40 of:=[.L40]/[.C3]
+L40 of:=[.J40]*[.I3]
+A41 24
+B41 Įdėjimas į polietileno maišus
+E41 Ne
+F41 200
+G41 of:=IF([.E41]="taip";1;IF([.E41]="ne";0))
+H41 of:=[.C3]/[.F41]*60*[.G41]
+I41 of:=15*[.G41]
+J41 of:=([.I41]+[.H41])/60*[.G41]
+K41 of:=[.L41]/[.C3]
+L41 of:=[.J41]*[.I3]
+A43 25
+B43 Packaging
+E43 1
+F43 250
+G43 1
+H43 of:=[.C3]/[.F43]*60
+I43 10
+J43 of:=([.I43]+[.H43])/60
+K43 of:=[.L43]/[.C3]
+L43 of:=[.J43]*[.I3]
+A44 26
+C44 ALL:
+H44 of:=SUM([.H10:.H43])+SUM([.I10:.I43])
+I44 Min.
+J44 of:=SUM([.J10:.J43])
+K44 of:=SUM([.K10:.K43])
+L44 of:=SUM([.L10:.L43])
+A45 27
+H45 of:=[.H44]/60
+I45 Val.
+K45 of:=[.H45]*[.I3]
+B46 Full run produced during the Restriction Period (manual gluing shop) within:   
+E46 of:=[.C3]/[.F2]
+F46 of:=[.E46]/8
+E47 Valandas
+F47 Pamainas
+New Box formula 22-04-2026.ots macros: [] events: []
+SHEET Box populated: 9058 formulas: 3858
+SHEET Insert populated: 9037 formulas: 3833
+SHEET foam skaiciuokle Martino populated: 92 formulas: 37
+A1 Tiražas
+B1 Gaminio aukštis
+C1 Gaminio dydis X
+D1 Gaminio dydis Y
+E1 Detaliu tepla
+F1 Detalės kaina 
+G1  Batonu/lapu kiekis tirazui
+H1 Kaina  už batonus visam tirazui
+I1 Detalės kaina  su transportu
+J1 Detalės kaina + 5% pritaisymui
+O1 Isdeliojiimas A
+P1 Isdeliojimas B
+O2 of:=(TRUNC([.C31]/[.C4])*TRUNC([.D31]/[.D4]))
+P2 of:=(TRUNC([.C31]/[.D4])*TRUNC([.D31]/[.C4]))
+O3 of:=(TRUNC([.C30]/[.C4])*TRUNC([.D30]/[.D4]))
+P3 of:=(TRUNC([.C30]/[.D4])*TRUNC([.D30]/[.C4]))
+A4 1000
+B4 52
+C4 250
+D4 400
+O4 MAX
+P4 of:=MAX([.O2:.P2])
+O5 MAX
+P5 of:=MAX([.O3:.P3])
+A8 Faom'u žaliava
+A9 LD 1552 Pilkas
+E9 of:=TRUNC([.B29]/[.B4])*[.P4]
+F9 of:=[.F29]/[.E9]
+G9 of:=[.A4]/[.E9]
+H9 of:=[.G9]*[.F29]
+A10 LD 1835 Antracitas
+E10 of:=TRUNC([.B30]/[.B4])*[.P5]
+F10 of:=[.F30]/[.E10]
+G10 of:=[.A4]/[.E10]
+H10 of:=[.G10]*[.F30]
+A11 LD 2952 Antracitas
+E11 of:=TRUNC([.B31]/[.B4])*[.P4]
+F11 of:=[.F31]/[.E11]
+G11 of:=[.A4]/[.E11]
+H11 of:=[.G11]*[.F31]
+A12 LD 3330 Antracitas
+E12 of:=TRUNC([.B32]/[.B4])*[.P4]
+F12 of:=[.F32]/[.E12]
+G12 of:=[.A4]/[.E12]
+H12 of:=[.G12]*[.F32]
+A13 EV 5030  White
+E13 of:=TRUNC([.B33]/[.B4])*[.P5]
+F13 of:=[.F33]/[.E13]
+G13 of:=[.A4]/[.E13]
+H13 of:=[.G13]*[.F33]
+O13 of:=TRUNC([.C31]/[.C4])
+P13 of:=TRUNC([.C31]/[.D4])
+O14 of:=TRUNC([.D31]/[.D4])
+P14 of:=TRUNC([.D31]/[.C4])
+O15 of:=[.O13]*[.O14]
+P15 of:=[.P13]*[.P14]
+A28 Faom'u žaliava
+B28 Storis
+C28 Dydis X
+D28 Dydis Y
+E28 Kaina už 1m2
+F28  Kaina už batona
+A29 LD 1552
+B29 52
+C29 1000
+D29 2000
+E29 18.76
+F29 of:=([.C29]*[.D29]/1000000)*[.E29]
+A30 LD 1835
+B30 35
+C30 1000
+D30 1850
+E30 12.08
+F30 of:=([.C30]*[.D30]/1000000)*[.E30]
+A31 LD 2952
+B31 52
+C31 1000
+D31 2000
+E31 21.43
+F31 of:=([.C31]*[.D31]/1000000)*[.E31]
+A32 LD 3330
+B32 30
+C32 1000
+D32 2000
+E32 13.82
+F32 of:=([.C32]*[.D32]/1000000)*[.E32]
+A33 EV 5030 White
+B33 30
+C33 1000
+D33 2000
+E33 22.83
+F33 of:=([.C33]*[.D33]/1000000)*[.E33]
