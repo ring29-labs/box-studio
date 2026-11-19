@@ -54,8 +54,8 @@ import UniformTypeIdentifiers
     }
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else { decisionHandler(.cancel); return }
-        let site = Bundle.main.resourceURL!.appendingPathComponent("site").path + "/"
-        if url.isFileURL && url.standardizedFileURL.path.hasPrefix(site) { decisionHandler(.allow); return }
+        let site = Bundle.main.resourceURL!.appendingPathComponent("site").resolvingSymlinksInPath().standardizedFileURL.path + "/"
+        if url.isFileURL && url.resolvingSymlinksInPath().standardizedFileURL.path.hasPrefix(site) { decisionHandler(.allow); return }
         if navigationAction.navigationType == .linkActivated && ["https", "http"].contains(url.scheme ?? "") { NSWorkspace.shared.open(url) }
         decisionHandler(.cancel)
     }
