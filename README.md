@@ -1,5 +1,7 @@
 # Box Studio
 
+[VIA 3D Packaging Studio](https://box-studio.ring29.com/designer/) adds three constructions, live materials and artwork, animated opening, client-side STEP/GLB export and a quote-request pack. Read [the designer and tool notes](docs/VIA_STUDIO.md) for architecture, CAD models and production-integration boundaries.
+
 A guided configurator for a 0302 rigid box with a separate lid and base. Dimensions, material selections and finishing drive production labour and the quote automatically. It runs in a browser and as a local Mac app.
 
 The browser uses WebAssembly compiled from the same Rust engine linked into the Mac app. Ordinary form calculations happen on the user's device. The website also offers an optional assistant built with Vercel AI SDK 7 and AI Gateway; it proposes changes using that same Rust calculator. The offline Mac form does not require an account, database or model API.
@@ -23,6 +25,7 @@ The review includes quantity comparisons and the production-process breakdown wi
 Node.js 22 and Python 3 are sufficient for the checked-in browser build:
 
 ```sh
+npm ci
 npm run build
 npm run preview
 ```

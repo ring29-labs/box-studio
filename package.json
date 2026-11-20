@@ -1,17 +1,27 @@
 {
- "name": "ring29-box-studio",
- "version": "0.2.0",
- "private": true,
- "type": "module",
- "engines": {"node":"22.x"},
- "scripts": {
-  "build": "node tools/build-web.mjs",
-  "build:engine": "zsh tools/build-wasm.sh",
-  "test": "cargo test && cargo build --bin verify && node tools/check-web.mjs && node --test tools/assistant.test.mjs",
-  "preview": "python3 -m http.server 4178 --directory web/dist --bind 127.0.0.1"
- },
- "dependencies": {
-  "ai": "^7.0.177",
-  "zod": "^4.6.7"
- }
+  "name": "ring29-box-studio",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "node tools/build-web.mjs",
+    "build:engine": "zsh tools/build-wasm.sh",
+    "test": "cargo test && cargo build --bin verify && node tools/check-web.mjs && node --test tools/assistant.test.mjs",
+    "preview": "python3 -m http.server 4178 --directory web/dist --bind 127.0.0.1",
+    "test:designer": "node --test tools/designer.test.mjs tools/cad.test.mjs tools/share.test.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/montserrat": "^5.3.0",
+    "ai": "^7.0.177",
+    "replicad": "^1.2.1",
+    "replicad-opencascadejs": "^1.2.1",
+    "three": "^0.187.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
 }

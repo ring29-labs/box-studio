@@ -1,0 +1,14 @@
+VIA Packaging Studio — third-party components
+
+Three.js 0.187.0 — MIT; https://github.com/mrdoob/three.js
+Replicad 1.2.1 — MIT; https://github.com/sgenoud/replicad
+replicad-opencascadejs 1.2.1 — LGPL-2.1-only; source and build instructions:
+https://github.com/sgenoud/replicad/tree/main/packages/replicad-opencascadejs
+Published build gitHead: 5e4ad9bb5a35bb9ae0571e91c25fa1897ba0570c
+OpenCascade.js: https://github.com/donalffons/opencascade.js
+The separate opencascade.js and opencascade.wasm files can be replaced by a compatible library build.
+Montserrat variable font — SIL Open Font License; https://github.com/JulietaUla/Montserrat
+
+Full component licenses are in the licenses/ folder beside this notice.
+VIA logo and product reference photographs: Via Aquaria, https://via.lt and https://crm.via.lt.
+Included to demonstrate the requested VIA-branded designer; VIA has not been represented as approving this prototype.

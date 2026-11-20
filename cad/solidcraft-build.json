@@ -1,0 +1,674 @@
+{
+  "description": "SolidCraft MCP command recipe; dimensions in millimetres, CAD Z up. Three conceptual constructions with Lift controlling the exploded cover position. No paper/glue/tooling allowances. Parameters L/W/H affect all three models.",
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "L",
+        "expression": "240 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "W",
+        "expression": "170 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "H",
+        "expression": "70 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "T",
+        "expression": "2 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "C",
+        "expression": "0.7 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "LH",
+        "expression": "35 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Neck",
+        "expression": "12 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Lift",
+        "expression": "45 mm"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic base floor",
+        "body_name": "Classic base floor",
+        "length": "L",
+        "width": "W",
+        "height": "T",
+        "corner": [
+          "0-(L)/2",
+          "-(W)/2",
+          "0"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic base front",
+        "body_name": "Classic base front",
+        "length": "L",
+        "width": "T",
+        "height": "(H)-T",
+        "corner": [
+          "0-(L)/2",
+          "(W)/2-T",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic base back",
+        "body_name": "Classic base back",
+        "length": "L",
+        "width": "T",
+        "height": "(H)-T",
+        "corner": [
+          "0-(L)/2",
+          "-(W)/2",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic base left",
+        "body_name": "Classic base left",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(H)-T",
+        "corner": [
+          "0-(L)/2",
+          "-(W)/2+T",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic base right",
+        "body_name": "Classic base right",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(H)-T",
+        "corner": [
+          "0+(L)/2-T",
+          "-(W)/2+T",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic lid floor",
+        "body_name": "Classic lid floor",
+        "length": "L+2*T+2*C",
+        "width": "W+2*T+2*C",
+        "height": "T",
+        "corner": [
+          "0-(L+2*T+2*C)/2",
+          "-(W+2*T+2*C)/2",
+          "H-LH+T+C+Lift+(LH)-T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic lid front",
+        "body_name": "Classic lid front",
+        "length": "L+2*T+2*C",
+        "width": "T",
+        "height": "(LH)-T",
+        "corner": [
+          "0-(L+2*T+2*C)/2",
+          "(W+2*T+2*C)/2-T",
+          "H-LH+T+C+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic lid back",
+        "body_name": "Classic lid back",
+        "length": "L+2*T+2*C",
+        "width": "T",
+        "height": "(LH)-T",
+        "corner": [
+          "0-(L+2*T+2*C)/2",
+          "-(W+2*T+2*C)/2",
+          "H-LH+T+C+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic lid left",
+        "body_name": "Classic lid left",
+        "length": "T",
+        "width": "(W+2*T+2*C)-2*T",
+        "height": "(LH)-T",
+        "corner": [
+          "0-(L+2*T+2*C)/2",
+          "-(W+2*T+2*C)/2+T",
+          "H-LH+T+C+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Classic lid right",
+        "body_name": "Classic lid right",
+        "length": "T",
+        "width": "(W+2*T+2*C)-2*T",
+        "height": "(LH)-T",
+        "corner": [
+          "0+(L+2*T+2*C)/2-T",
+          "-(W+2*T+2*C)/2+T",
+          "H-LH+T+C+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic tray floor",
+        "body_name": "Magnetic tray floor",
+        "length": "L",
+        "width": "W",
+        "height": "T",
+        "corner": [
+          "(L+100)-(L)/2",
+          "-(W)/2",
+          "T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic tray front",
+        "body_name": "Magnetic tray front",
+        "length": "L",
+        "width": "T",
+        "height": "(H)-T",
+        "corner": [
+          "(L+100)-(L)/2",
+          "(W)/2-T",
+          "T+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic tray back",
+        "body_name": "Magnetic tray back",
+        "length": "L",
+        "width": "T",
+        "height": "(H)-T",
+        "corner": [
+          "(L+100)-(L)/2",
+          "-(W)/2",
+          "T+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic tray left",
+        "body_name": "Magnetic tray left",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(H)-T",
+        "corner": [
+          "(L+100)-(L)/2",
+          "-(W)/2+T",
+          "T+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic tray right",
+        "body_name": "Magnetic tray right",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(H)-T",
+        "corner": [
+          "(L+100)+(L)/2-T",
+          "-(W)/2+T",
+          "T+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic lower cover",
+        "body_name": "Magnetic lower cover",
+        "length": "L+2*T+2*C",
+        "width": "W+2*T+2*C",
+        "height": "T",
+        "corner": [
+          "(L+100)-(L+2*T+2*C)/2",
+          "-(W+2*T+2*C)/2",
+          "0"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic spine",
+        "body_name": "Magnetic spine",
+        "length": "L+2*T+2*C",
+        "width": "T",
+        "height": "H+T",
+        "corner": [
+          "(L+100)-(L+2*T+2*C)/2",
+          "-(W+2*T+2*C)/2",
+          "T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic upper cover",
+        "body_name": "Magnetic upper cover",
+        "length": "L+2*T+2*C",
+        "width": "W+2*T+2*C",
+        "height": "T",
+        "corner": [
+          "(L+100)-(L+2*T+2*C)/2",
+          "-(W+2*T+2*C)/2",
+          "H+2*T+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Magnetic closure flap",
+        "body_name": "Magnetic closure flap",
+        "length": "L+2*T+2*C",
+        "width": "T",
+        "height": "H*0.4",
+        "corner": [
+          "(L+100)-(L+2*T+2*C)/2",
+          "(W+2*T+2*C)/2-T",
+          "H+2*T+Lift-H*0.4"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder base floor",
+        "body_name": "Shoulder base floor",
+        "length": "L",
+        "width": "W",
+        "height": "T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "-(W)/2",
+          "0"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder base front",
+        "body_name": "Shoulder base front",
+        "length": "L",
+        "width": "T",
+        "height": "(H)-T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "(W)/2-T",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder base back",
+        "body_name": "Shoulder base back",
+        "length": "L",
+        "width": "T",
+        "height": "(H)-T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "-(W)/2",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder base left",
+        "body_name": "Shoulder base left",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(H)-T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "-(W)/2+T",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder base right",
+        "body_name": "Shoulder base right",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(H)-T",
+        "corner": [
+          "2*(L+100)+(L)/2-T",
+          "-(W)/2+T",
+          "0+T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Neck front",
+        "body_name": "Neck front",
+        "length": "L-2*T-2*C",
+        "width": "T",
+        "height": "H+Neck-T",
+        "corner": [
+          "2*(L+100)-(L-2*T-2*C)/2",
+          "(W-2*T-2*C)/2-T",
+          "T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Neck back",
+        "body_name": "Neck back",
+        "length": "L-2*T-2*C",
+        "width": "T",
+        "height": "H+Neck-T",
+        "corner": [
+          "2*(L+100)-(L-2*T-2*C)/2",
+          "-(W-2*T-2*C)/2",
+          "T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Neck left",
+        "body_name": "Neck left",
+        "length": "T",
+        "width": "W-2*T-2*C-2*T",
+        "height": "H+Neck-T",
+        "corner": [
+          "2*(L+100)-(L-2*T-2*C)/2",
+          "-(W-2*T-2*C)/2+T",
+          "T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Neck right",
+        "body_name": "Neck right",
+        "length": "T",
+        "width": "W-2*T-2*C-2*T",
+        "height": "H+Neck-T",
+        "corner": [
+          "2*(L+100)+(L-2*T-2*C)/2-T",
+          "-(W-2*T-2*C)/2+T",
+          "T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder lid floor",
+        "body_name": "Shoulder lid floor",
+        "length": "L",
+        "width": "W",
+        "height": "T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "-(W)/2",
+          "H+3+Lift+(LH)-T"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder lid front",
+        "body_name": "Shoulder lid front",
+        "length": "L",
+        "width": "T",
+        "height": "(LH)-T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "(W)/2-T",
+          "H+3+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder lid back",
+        "body_name": "Shoulder lid back",
+        "length": "L",
+        "width": "T",
+        "height": "(LH)-T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "-(W)/2",
+          "H+3+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder lid left",
+        "body_name": "Shoulder lid left",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(LH)-T",
+        "corner": [
+          "2*(L+100)-(L)/2",
+          "-(W)/2+T",
+          "H+3+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "name": "Shoulder lid right",
+        "body_name": "Shoulder lid right",
+        "length": "T",
+        "width": "(W)-2*T",
+        "height": "(LH)-T",
+        "corner": [
+          "2*(L+100)+(L)/2-T",
+          "-(W)/2+T",
+          "H+3+Lift"
+        ],
+        "operation": "new"
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "Classic base floor",
+          "Classic base front",
+          "Classic base back",
+          "Classic base left",
+          "Classic base right",
+          "Classic lid floor",
+          "Classic lid front",
+          "Classic lid back",
+          "Classic lid left",
+          "Classic lid right"
+        ],
+        "color": "#243b4a",
+        "pbr": {
+          "metallic": 0,
+          "roughness": 0.85,
+          "dielectric_ior": 1.5
+        }
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "Magnetic tray floor",
+          "Magnetic tray front",
+          "Magnetic tray back",
+          "Magnetic tray left",
+          "Magnetic tray right",
+          "Magnetic lower cover",
+          "Magnetic spine",
+          "Magnetic upper cover",
+          "Magnetic closure flap"
+        ],
+        "color": "#652638",
+        "pbr": {
+          "metallic": 0,
+          "roughness": 0.85,
+          "dielectric_ior": 1.5
+        }
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "Shoulder base floor",
+          "Shoulder base front",
+          "Shoulder base back",
+          "Shoulder base left",
+          "Shoulder base right",
+          "Shoulder lid floor",
+          "Shoulder lid front",
+          "Shoulder lid back",
+          "Shoulder lid left",
+          "Shoulder lid right"
+        ],
+        "color": "#1d4746",
+        "pbr": {
+          "metallic": 0,
+          "roughness": 0.85,
+          "dielectric_ior": 1.5
+        }
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "Neck front",
+          "Neck back",
+          "Neck left",
+          "Neck right"
+        ],
+        "color": "#d4b77d",
+        "pbr": {
+          "metallic": 0,
+          "roughness": 0.85,
+          "dielectric_ior": 1.5
+        }
+      }
+    }
+  ]
+}
