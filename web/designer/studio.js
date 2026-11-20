@@ -57,7 +57,7 @@ $('#open-close-box').onclick=()=>change('opening',state.opening>50?0:100);
 $('#viewport').addEventListener('lidtoggle',e=>change('opening',e.detail.opening));
 $('#viewport').addEventListener('partselect',e=>{const p=e.detail;$('#part-info').hidden=!p;if(p){$('#part-name').textContent=p.name;$('#part-size').textContent=p.size?p.size.map(v=>num(v)).join(' × ')+' mm board panel':'Artwork preview';$('#part-material').textContent=p.name.includes('Insert')?'Foam frame concept':materials[state.material].name+' · '+state.finish+' surface'}});
 $('#clear-part').onclick=()=>viewer?.clearSelection();
-all('[data-light]').forEach(b=>b.onclick=()=>{viewer?.lighting(b.dataset.light);all('[data-light]').forEach(n=>n.setAttribute('aria-pressed',n===b))});
+all('[data-light]').forEach(b=>b.onclick=()=>{viewer?.lighting(b.dataset.light);$('.stage').classList.toggle('gallery-light',b.dataset.light==='night');all('[data-light]').forEach(n=>n.setAttribute('aria-pressed',n===b))});
 $('#material-closeup').onclick=()=>{change('opening',0);viewer?.closeup();$('#toggle-spin').setAttribute('aria-pressed',false);if(innerWidth<761)$('#viewport').scrollIntoView({block:'start',behavior:'smooth'})};
 $('#toggle-spin').onclick=()=>{if(!viewer)return;viewer.autoRotate=!viewer.autoRotate;$('#toggle-spin').setAttribute('aria-pressed',viewer.autoRotate)};
 $('#snapshot').onclick=()=>{if(!viewer)return;const a=document.createElement('a');a.href=viewer.snapshot();a.download='VIA packaging design.png';a.click();toast('Design image exported.')};

@@ -16,6 +16,7 @@ const fields={
 };
 export const configurationSchema=z.object(fields).partial().strict();
 const visualSchema=z.object({construction:z.enum(['lid-base','magnetic','shoulder']).optional(),colour:z.string().regex(/^#[0-9a-f]{6}$/i).optional(),inside:z.string().regex(/^#[0-9a-f]{6}$/i).optional(),material:z.enum(['colorplan','wibalin','coated','kraft','geltex']).optional(),foil:z.enum(['gold','silver','ink','none']).optional(),finish:z.enum(['matte','gloss','soft-touch']).optional(),insert:z.enum(['none','frame']).optional(),text:z.string().max(32).optional(),subtitle:z.string().max(60).optional()}).strict();
+const designerPatchSchema=configurationSchema.pick({quantity:true,length_mm:true,width_mm:true,base_height_mm:true,lid_height_mm:true,hourly_rate:true,margin_percent:true});
 export const bodySchema=z.object({
  message:z.string().trim().min(1).max(1600),configuration:configurationSchema,
  design:z.enum(['lid-base','magnetic','shoulder']).optional(),
@@ -49,8 +50,8 @@ Current calculated result: ${JSON.stringify(currentQuote)}
 Current visual design: ${JSON.stringify(currentVisuals??{})}
 ${design?`You are embedded in the VIA Aquaria 3D designer. Current construction: ${design}. You may propose geometry and visual settings for lid-base, magnetic and shoulder constructions. Only lid-base has a connected price model: magnetic and shoulder MUST be supplier_quote_required, never reuse 0302 prices or machine-fit claims. The propose_configuration tool also accepts visuals for construction, outside colour, inside colour, material, foil, finish, insert and artwork text. Use exact supported visual values. Only include requested changes. Papers available in this designer: ${JSON.stringify(designMaterials)}. Designer limits: length 80–500 mm, width 60–400 mm, base height 25–200 mm, lid height 10–base height, quantity at least 100. Colour values are visual approximations, not physical paper-shade codes. The tool result is a draft preview; the form recalculates any supported price after the user selects Apply to design.`:''}`,
   tools:{
-   get_catalog:tool({description:'Get exact allowed source catalogue values for specified material or finishing cells.',inputSchema:z.object({cells:z.array(z.enum(cells)).min(1).max(22)}),execute:async({cells:requested})=>Object.fromEntries(requested.map(c=>[c,catalog[c]]))}),
-   propose_configuration:tool({description:'Preview requested configuration changes. Prices are available only for supported lid-base models; other constructions require a supplier quote. Does not modify the form.',inputSchema:design?z.object({patch:configurationSchema,visuals:visualSchema.optional()}):z.object({patch:configurationSchema}),execute:async({patch,visuals})=>{
+   get_catalog:tool({description:'Get exact allowed source catalogue values for specified material or finishing cells.',inputSchema:z.object({cells:z.array(z.enum(cells)).min(1).max(22)}),execute:async({cells:requested})=>Object.fromEntries(requested.map(c=>[c,design&&['C7','C8'].includes(c)?{...catalog[c],options:Object.values(designMaterials).map(m=>m.paper)}:catalog[c]]))}),
+   propose_configuration:tool({description:'Preview requested configuration changes. In the 3D designer use patch only for dimensions, quantity and pricing assumptions; use visuals for paper, colour, construction and finishing. Prices are available only for supported lid-base models; other constructions require a supplier quote. Does not modify the form.',inputSchema:design?z.object({patch:designerPatchSchema,visuals:visualSchema.optional()}):z.object({patch:configurationSchema}),execute:async({patch,visuals})=>{
     let candidate;
     if(design){
      const next=mergeConfiguration(configuration,patch);const v=visualSchema.parse(visuals??{});
