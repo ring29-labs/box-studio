@@ -48,7 +48,7 @@ SolidCraft MCP built the reference CAD collection. GridCraft remains the spreads
 
 ## Customer workflow
 
-Visitors can choose a construction or starting look, change dimensions, choose a source paper, visual colours and surface, add text/foil or a PNG/JPEG logo, inspect the interior, and export an image, GLB, STEP, panel SVG or saved design JSON. A share link carries design settings in its fragment; uploaded artwork is excluded from the link. Logo images are normalized to PNG locally and are not sent to the assistant.
+Visitors can choose a construction or starting look, change dimensions, choose a source paper, visual colours and surface, add text/foil or a PNG/JPEG logo, inspect the interior, and export an image, GLB, STEP, panel SVG or saved design JSON. Each starting design has a stable link: `?design=signature`, `?design=nocturne` and `?design=botanical`. Share design creates a named, compressed snapshot URL with a content identifier. The complete settings travel in the URL fragment; no design database is needed. Uploaded artwork is excluded from links and can be shared with the saved design file. Logo images are normalized to PNG locally and are not sent to the assistant.
 
 Up to five designs can be collected into a quote request. The visitor enters contact details and downloads a JSON request pack with geometry, settings, previews and any supported estimate. A readable brief and an email-draft link to VIA are provided. The visitor reviews and sends that email themselves. The demo does not submit into Odoo, charge a card, reserve production or create an accepted manufacturing order. There is no customer/contact database; contact fields are held in the current page and exported only at the visitor's choice.
 

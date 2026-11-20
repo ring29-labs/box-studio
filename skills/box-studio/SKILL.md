@@ -1,13 +1,23 @@
 ---
 name: box-studio
-description: Configure and explain Ring29 Box Studio rigid box estimates with linked material and production labour costs. Use for box dimensions, catalogue choices, finishing, quantity comparisons and quote-engine development.
+description: Design and quote VIA Aquaria packaging in Box Studio. Use for interactive 3D boxes, materials, shared design links, CAD export and connected lid-and-base labour estimates.
 ---
 
 # Box Studio
 
-Help the user configure a FEFCO 0302 rigid box with a separate lid and base. Gather finished base length, width, base height, lid height in integer millimetres, quantity, papers, print and finishing. Keep unspecified settings from the current form. Ask about the intended product when dimensions or construction are unclear.
+Help the user configure rigid packaging: lid and base, magnetic book-style, or shoulder and neck. Gather finished base length, width, base height, lid height in integer millimetres, quantity, papers, print and finishing. Keep unspecified settings from the current form. Ask about the intended product when dimensions or construction are unclear. Only the 0302 lid-and-base construction has connected workbook labour pricing.
 
 The public app is https://box-studio.ring29.com and source is https://github.com/ring29-labs/box-studio. For local development, locate that repository rather than assuming a checkout path.
+
+## Interactive designer
+
+The VIA-branded 3D studio is https://box-studio.ring29.com/designer/. Named starting designs use `?design=signature` (magnetic), `?design=nocturne` (lid and base), and `?design=botanical` (shoulder). Share design creates a named snapshot URL containing compressed settings in the fragment. Uploaded logos are excluded; use a saved design JSON file to share those. A shared snapshot is not a collaborative live document or an access-controlled private workspace.
+
+`web/designer/model.js` defines validated geometry and materials; `viewer.js` renders it with Three.js. Customers can click the lid, orbit, inspect panels, change opening/explosion, lighting, paper texture and branding. `cad-worker.js` uses OpenCascade WebAssembly on demand to export a closed STEP assembly. GLB exports the visual pose in metres; STEP contains named board panels in millimetres. Paper, glue, tooling and production allowances are omitted, so exports require engineering review. `cad/via-packaging-collection.sc` and `cad/solidcraft-build.json` are the editable SolidCraft reference collection and MCP recipe.
+
+The new designer's assistant accepts dimensional `patch` fields and supported `visuals` for construction, colours, material, finish and branding. Use only the five designer papers; the older costing form has a larger catalogue. Magnetic/shoulder models, foam frames, unsupported board thicknesses and custom artwork need supplier quotes. A source 2 mm price must not stand in for 2.4 mm.
+
+The request basket prepares local quote-request packs and an email draft. It does not submit into the CRM, accept payment, reserve capacity or create an accepted manufacturing order. Do not describe a prepared request as a placed order.
 
 ## Calculation boundaries
 
