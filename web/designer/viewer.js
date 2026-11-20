@@ -19,7 +19,7 @@ export class BoxViewer{
   const rim=new THREE.DirectionalLight(0xe3eaff,1);rim.position.set(-.4,.2,-.3);this.scene.add(rim);
   this.keyLight=light;this.rimLight=rim;
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.ShadowMaterial({opacity:.15}));floor.rotation.x=-Math.PI/2;floor.position.y=-.0008;floor.receiveShadow=true;this.scene.add(floor);
-  this.root=new THREE.Group();this.scene.add(this.root);this.measurements=new THREE.Group();this.scene.add(this.measurements);this.targetOpen=0;this.currentOpen=0;this.autoRotate=false;this.autoCamera=true;this.last=performance.now();
+  this.root=new THREE.Group();this.scene.add(this.root);this.measurements=new THREE.Group();this.scene.add(this.measurements);this.targetOpen=0;this.currentOpen=0;this.autoRotate=false;this.autoCamera=true;this.autoZoomFactor=1;this.last=performance.now();
   this.raycaster=new THREE.Raycaster();this.pointer=new THREE.Vector2();
   this.renderer.domElement.addEventListener('pointerdown',e=>{this.pointerStart={x:e.clientX,y:e.clientY}});
   this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons){if(this.pointerStart&&Math.hypot(e.clientX-this.pointerStart.x,e.clientY-this.pointerStart.y)>6)this.autoCamera=false;return}const hit=this.pick(e);this.renderer.domElement.style.cursor=hit?'pointer':'grab';this.renderer.domElement.title=hit?(this.isLid(hit.object)?'Click the lid to open or close it':'Click to inspect '+hit.object.name):'Drag to orbit the box'});
@@ -62,7 +62,7 @@ export class BoxViewer{
  }
  pose(){if(!this.state)return;const s=this.state,t=lidTransform(s,this.currentOpen);this.groups.lid.position.fromArray(t.position.map(v=>v*mm));this.groups.lid.rotation.x=t.angle;
   const ex=s.explode/100;this.groups.lid.position.y+=ex*.1;this.groups.neck.position.y=ex*.04;this.groups.insert.position.y=ex*.06;this.groups.base.position.y=0;
-  if(this.autoCamera){const target=this.frameHeight(),delta=target-this.controls.target.y;this.controls.target.y=target;this.camera.position.y+=delta}
+  if(this.autoCamera){const target=this.frameHeight(),delta=target-this.controls.target.y;this.controls.target.y=target;this.camera.position.y+=delta;const zoom=this.frameZoom();this.camera.position.sub(this.controls.target).multiplyScalar(zoom/this.autoZoomFactor).add(this.controls.target);this.autoZoomFactor=zoom}
   this.measurements.visible=s.dimensions;
  }
  addMeasurements(){const s=this.state,L=s.length*mm,W=s.width*mm,H=s.height*mm;const color=0x8b4856;const lines=[[[ -L/2,.002,W/2+.025],[L/2,.002,W/2+.025],`${s.length} mm`],[[-L/2-.025,.002,-W/2],[-L/2-.025,.002,W/2],`${s.width} mm`],[[L/2+.025,0,W/2],[L/2+.025,H,W/2],`${s.height} mm`]];
@@ -78,7 +78,8 @@ export class BoxViewer{
  lighting(mode){const night=mode==='night',day=mode==='daylight';this.scene.background.set(night?'#28262a':day?'#e9eef1':'#f1f1ef');this.renderer.toneMappingExposure=night?.72:day?1:.82;this.keyLight.color.set(day?'#edf5ff':'#fff7eb');this.keyLight.intensity=night?3.8:day?2.8:2.2;this.keyLight.position.set(day?-.3:.2,.65,.35);this.rimLight.intensity=night?3:1;this.scene.environmentIntensity=night?.7:1}
  closeup(){if(!this.state)return;this.autoCamera=false;this.autoRotate=false;this.root.rotation.y=0;const s=this.state;this.targetOpen=0;this.currentOpen=0;this.state.opening=0;this.pose();const t=lidTransform(s,0);const y=(t.position[1]+(s.construction==='magnetic'?s.board:s.lidHeight))*mm;this.controls.target.set(0,y,0);const factor=Math.max(1,1.2/this.camera.aspect);this.camera.position.set(.085*factor,y+.055*factor,.105*factor);this.controls.update()}
  frameHeight(){const s=this.state;return (s.height*.7+this.currentOpen*(s.construction==='magnetic'?s.width*.4:s.height*.5+15)+s.explode*.6)*mm}
- resetCamera(view='perspective'){this.autoCamera=true;const s=this.state,scale=Math.max(s.length,s.width,s.height*2)*mm*Math.max(1,1.45/this.camera.aspect);const target=new THREE.Vector3(0,this.frameHeight(),0);this.controls.target.copy(target);this.camera.position.copy(target).add(new THREE.Vector3(...(view==='top'?[.001,1.9,.001]:view==='front'?[0,.4,2]:[1.35,1.05,1.6])).multiplyScalar(scale));this.controls.update()}
+ frameZoom(){return 1+this.currentOpen*.45+this.state.explode*.0035}
+ resetCamera(view='perspective'){this.autoCamera=true;this.autoZoomFactor=this.frameZoom();const s=this.state,scale=Math.max(s.length,s.width,s.height*2)*mm*Math.max(1,1.45/this.camera.aspect)*this.autoZoomFactor;const target=new THREE.Vector3(0,this.frameHeight(),0);this.controls.target.copy(target);this.camera.position.copy(target).add(new THREE.Vector3(...(view==='top'?[.001,1.9,.001]:view==='front'?[0,.4,2]:[1.35,1.05,1.6])).multiplyScalar(scale));this.controls.update()}
  draw(){this.renderer.render(this.scene,this.camera)}
  frame(){this.animation=requestAnimationFrame(this.frame);if(this.state){const delta=this.targetOpen-this.currentOpen;if(Math.abs(delta)>.0005){this.currentOpen+=delta*.1;this.pose()}if(this.autoRotate)this.root.rotation.y+=.002;this.measurements.rotation.y=this.root.rotation.y;this.selectionBox?.update()}this.controls.update();this.draw()}
  snapshot(){this.draw();return this.renderer.domElement.toDataURL('image/png')}
