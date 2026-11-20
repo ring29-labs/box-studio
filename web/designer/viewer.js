@@ -19,10 +19,11 @@ export class BoxViewer{
   const rim=new THREE.DirectionalLight(0xe3eaff,1);rim.position.set(-.4,.2,-.3);this.scene.add(rim);
   this.keyLight=light;this.rimLight=rim;
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.ShadowMaterial({opacity:.15}));floor.rotation.x=-Math.PI/2;floor.position.y=-.0008;floor.receiveShadow=true;this.scene.add(floor);
-  this.root=new THREE.Group();this.scene.add(this.root);this.measurements=new THREE.Group();this.scene.add(this.measurements);this.targetOpen=0;this.currentOpen=0;this.autoRotate=false;this.last=performance.now();
+  this.root=new THREE.Group();this.scene.add(this.root);this.measurements=new THREE.Group();this.scene.add(this.measurements);this.targetOpen=0;this.currentOpen=0;this.autoRotate=false;this.autoCamera=true;this.last=performance.now();
   this.raycaster=new THREE.Raycaster();this.pointer=new THREE.Vector2();
   this.renderer.domElement.addEventListener('pointerdown',e=>{this.pointerStart={x:e.clientX,y:e.clientY}});
-  this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons)return;const hit=this.pick(e);this.renderer.domElement.style.cursor=hit?'pointer':'grab';this.renderer.domElement.title=hit?(this.isLid(hit.object)?'Click the lid to open or close it':'Click to inspect '+hit.object.name):'Drag to orbit the box'});
+  this.renderer.domElement.addEventListener('pointermove',e=>{if(e.buttons){if(this.pointerStart&&Math.hypot(e.clientX-this.pointerStart.x,e.clientY-this.pointerStart.y)>6)this.autoCamera=false;return}const hit=this.pick(e);this.renderer.domElement.style.cursor=hit?'pointer':'grab';this.renderer.domElement.title=hit?(this.isLid(hit.object)?'Click the lid to open or close it':'Click to inspect '+hit.object.name):'Drag to orbit the box'});
+  this.renderer.domElement.addEventListener('wheel',()=>this.autoCamera=false,{passive:true});
   this.renderer.domElement.addEventListener('pointerup',e=>{if(!this.pointerStart||Math.hypot(e.clientX-this.pointerStart.x,e.clientY-this.pointerStart.y)>6)return;const hit=this.pick(e);if(!hit){this.clearSelection();return}this.selectPart(hit.object);if(this.isLid(hit.object))container.dispatchEvent(new CustomEvent('lidtoggle',{detail:{opening:this.targetOpen>.5?0:100}}))});
   this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(container);this.resize();this.frame=this.frame.bind(this);this.frame();
  }
@@ -61,12 +62,13 @@ export class BoxViewer{
  }
  pose(){if(!this.state)return;const s=this.state,t=lidTransform(s,this.currentOpen);this.groups.lid.position.fromArray(t.position.map(v=>v*mm));this.groups.lid.rotation.x=t.angle;
   const ex=s.explode/100;this.groups.lid.position.y+=ex*.1;this.groups.neck.position.y=ex*.04;this.groups.insert.position.y=ex*.06;this.groups.base.position.y=0;
+  if(this.autoCamera){const target=this.frameHeight(),delta=target-this.controls.target.y;this.controls.target.y=target;this.camera.position.y+=delta}
   this.measurements.visible=s.dimensions;
  }
  addMeasurements(){const s=this.state,L=s.length*mm,W=s.width*mm,H=s.height*mm;const color=0x8b4856;const lines=[[[ -L/2,.002,W/2+.025],[L/2,.002,W/2+.025],`${s.length} mm`],[[-L/2-.025,.002,-W/2],[-L/2-.025,.002,W/2],`${s.width} mm`],[[L/2+.025,0,W/2],[L/2+.025,H,W/2],`${s.height} mm`]];
   for(const[a,b,text]of lines){const p1=new THREE.Vector3(...a),p2=new THREE.Vector3(...b);const geometry=new THREE.BufferGeometry().setFromPoints([p1,p2]);this.measurements.add(new THREE.Line(geometry,new THREE.LineBasicMaterial({color})));for(const p of [p1,p2]){const ball=new THREE.Mesh(new THREE.SphereGeometry(.0012,8,8),new THREE.MeshBasicMaterial({color}));ball.position.copy(p);this.measurements.add(ball)}const c=document.createElement('canvas');c.width=256;c.height=64;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,256,64);x.fillStyle='#6c3542';x.textAlign='center';x.font='500 28px sans-serif';x.fillText(text,128,43);const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),depthTest:false}));sprite.position.copy(p1.clone().lerp(p2,.5));sprite.position.y+=.009;sprite.scale.set(.062,.0155,1);this.measurements.add(sprite)}
  }
- setOpening(n){this.targetOpen=n/100;this.state.opening=n}
+ setOpening(n){this.autoCamera=true;this.targetOpen=n/100;this.state.opening=n}
  setExplode(n){this.state.explode=n;this.pose()}
  setDimensions(on){this.state.dimensions=on;this.pose()}
  pick(event){const r=this.renderer.domElement.getBoundingClientRect();this.pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);this.raycaster.setFromCamera(this.pointer,this.camera);return this.raycaster.intersectObject(this.root,true).find(hit=>hit.object.isMesh)}
@@ -74,8 +76,9 @@ export class BoxViewer{
  selectPart(object){this.clearSelection();this.selectedPart=object;this.selectionBox=new THREE.BoxHelper(object,0xa75e72);this.selectionBox.material.depthTest=false;this.selectionBox.renderOrder=5;this.scene.add(this.selectionBox);this.container.dispatchEvent(new CustomEvent('partselect',{detail:{name:object.name,size:object.userData.dimensions_mm??null,group:this.isLid(object)?'lid':'base'}}))}
  clearSelection(){if(this.selectionBox){this.scene.remove(this.selectionBox);this.selectionBox.dispose();this.selectionBox=null}this.selectedPart=null;this.container.dispatchEvent(new CustomEvent('partselect',{detail:null}))}
  lighting(mode){const night=mode==='night',day=mode==='daylight';this.scene.background.set(night?'#28262a':day?'#e9eef1':'#f1f1ef');this.renderer.toneMappingExposure=night?.72:day?1:.82;this.keyLight.color.set(day?'#edf5ff':'#fff7eb');this.keyLight.intensity=night?3.8:day?2.8:2.2;this.keyLight.position.set(day?-.3:.2,.65,.35);this.rimLight.intensity=night?3:1;this.scene.environmentIntensity=night?.7:1}
- closeup(){if(!this.state)return;this.autoRotate=false;this.root.rotation.y=0;const s=this.state;this.targetOpen=0;this.currentOpen=0;this.state.opening=0;this.pose();const t=lidTransform(s,0);const y=(t.position[1]+(s.construction==='magnetic'?s.board:s.lidHeight))*mm;this.controls.target.set(0,y,0);const factor=Math.max(1,1.2/this.camera.aspect);this.camera.position.set(.085*factor,y+.055*factor,.105*factor);this.controls.update()}
- resetCamera(view='perspective'){const s=this.state,scale=Math.max(s.length,s.width,s.height*2)*mm*Math.max(1,1.45/this.camera.aspect);const target=new THREE.Vector3(0,s.height*mm*.7,0);this.controls.target.copy(target);this.camera.position.copy(target).add(new THREE.Vector3(...(view==='top'?[.001,1.9,.001]:view==='front'?[0,.4,2]:[1.35,1.05,1.6])).multiplyScalar(scale));this.controls.update()}
+ closeup(){if(!this.state)return;this.autoCamera=false;this.autoRotate=false;this.root.rotation.y=0;const s=this.state;this.targetOpen=0;this.currentOpen=0;this.state.opening=0;this.pose();const t=lidTransform(s,0);const y=(t.position[1]+(s.construction==='magnetic'?s.board:s.lidHeight))*mm;this.controls.target.set(0,y,0);const factor=Math.max(1,1.2/this.camera.aspect);this.camera.position.set(.085*factor,y+.055*factor,.105*factor);this.controls.update()}
+ frameHeight(){const s=this.state;return (s.height*.7+this.currentOpen*(s.construction==='magnetic'?s.width*.4:s.height*.5+15)+s.explode*.6)*mm}
+ resetCamera(view='perspective'){this.autoCamera=true;const s=this.state,scale=Math.max(s.length,s.width,s.height*2)*mm*Math.max(1,1.45/this.camera.aspect);const target=new THREE.Vector3(0,this.frameHeight(),0);this.controls.target.copy(target);this.camera.position.copy(target).add(new THREE.Vector3(...(view==='top'?[.001,1.9,.001]:view==='front'?[0,.4,2]:[1.35,1.05,1.6])).multiplyScalar(scale));this.controls.update()}
  draw(){this.renderer.render(this.scene,this.camera)}
  frame(){this.animation=requestAnimationFrame(this.frame);if(this.state){const delta=this.targetOpen-this.currentOpen;if(Math.abs(delta)>.0005){this.currentOpen+=delta*.1;this.pose()}if(this.autoRotate)this.root.rotation.y+=.002;this.measurements.rotation.y=this.root.rotation.y;this.selectionBox?.update()}this.controls.update();this.draw()}
  snapshot(){this.draw();return this.renderer.domElement.toDataURL('image/png')}
