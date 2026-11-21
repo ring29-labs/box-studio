@@ -3,6 +3,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {sourceDigest,wasmDigest} from './engine-manifest.mjs';
 import {build} from 'esbuild';
+import {buildRenderMaps} from './build-render-maps.mjs';
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const manifest=JSON.parse(await fs.readFile(path.join(root,'web/engine-manifest.json'),'utf8'));
 if(manifest.source_sha256!==await sourceDigest()||manifest.wasm_sha256!==await wasmDigest())throw Error('The browser engine is stale. Run the Rust WebAssembly build before publishing.');
@@ -19,6 +20,7 @@ for(const name of ['demo.mp4','demo.vtt','demo-poster.png','demo.html']){try{awa
 console.log('Built static guided form in web/dist');
 const designer=path.join(dist,'designer');await fs.mkdir(designer,{recursive:true});
 await fs.cp(path.join(root,'web/designer/assets'),path.join(designer,'assets'),{recursive:true});
+await buildRenderMaps(path.join(designer,'assets/render/v1'));
 for(const name of ['index.html','studio.css'])await fs.copyFile(path.join(root,'web/designer',name),path.join(designer,name));
 await fs.copyFile(path.join(root,'node_modules/@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2'),path.join(designer,'assets/montserrat.woff2'));
 await fs.copyFile(path.join(root,'node_modules/replicad-opencascadejs/dist/replicad_single.js'),path.join(designer,'opencascade.js'));

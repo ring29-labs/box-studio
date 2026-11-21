@@ -1,6 +1,7 @@
 import {BoxViewer} from './viewer.js';
 import {defaults,studioLooks,clean,validate,constructions,materials,innerDimensions,quoteRequest,brief,closedPanels} from './model.js';
 import {designLink,readDesignLink} from './share.js';
+import {resolveRenderSpec} from './render-spec.js';
 const $=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const euro=n=>new Intl.NumberFormat('en-IE',{style:'currency',currency:'EUR'}).format(n);
@@ -24,7 +25,15 @@ function renderControls(){
  all('[data-colour]').forEach(b=>b.style.backgroundColor=b.dataset.colour);
  $('#clear-logo').hidden=!state.artwork;
 }
-function renderInformation(){const c=constructions[state.construction];$('#construction-label').textContent=c.name.toUpperCase();$('#design-title').textContent=c.title;$('#design-description').textContent=c.description;$('#source-product').href=c.source;$('#inner-size').textContent=innerDimensions(state).map(x=>num(x)).join(' × ')+' mm';$('#dimensions-caption').textContent=`${state.length} × ${state.width} × ${state.height} mm · ${state.board} mm board`;$('#toggle-dimensions').setAttribute('aria-pressed',state.dimensions);$('#open-close-box').textContent=state.opening>50?'Close box':'Open box';$('#basket-count').textContent=basket.length;$('#basket-count').hidden=!basket.length}
+const previewOnly = new Set(['opening','explode','dimensions','yaw','light','gloss','grain']);
+function renderStudioControls() {
+  $('#gloss-value').textContent = state.gloss + '%';
+  $('#grain-value').textContent = state.grain + '%';
+  $('#yaw-value').textContent = Math.round(state.yaw) + '°';
+  $('.stage').classList.toggle('gallery-light', state.light === 'night');
+  all('[data-light]').forEach(button => button.setAttribute('aria-pressed', button.dataset.light === state.light));
+}
+function renderInformation(){renderStudioControls();const c=constructions[state.construction];$('#construction-label').textContent=c.name.toUpperCase();$('#design-title').textContent=c.title;$('#design-description').textContent=c.description;$('#source-product').href=c.source;$('#inner-size').textContent=innerDimensions(state).map(x=>num(x)).join(' × ')+' mm';$('#dimensions-caption').textContent=`${state.length} × ${state.width} × ${state.height} mm · ${state.board} mm board`;$('#toggle-dimensions').setAttribute('aria-pressed',state.dimensions);$('#open-close-box').textContent=state.opening>50?'Close box':'Open box';$('#basket-count').textContent=basket.length;$('#basket-count').hidden=!basket.length}
 const worker=new Worker('../worker.js');worker.onmessage=({data})=>{if(data.id!==generation)return;quote=data.result?.error?null:data.result;renderQuote(data.result?.error)};worker.onerror=()=>{quote=null;renderQuote('The cost engine could not load. You can still request a supplier quote.')};
 function calculateQuote(){generation++;quote=null;if(invalidFields.size){renderQuote('Correct the highlighted dimension before requesting a quote.');return}const q=quoteRequest(state,window.BOX_CATALOG);if(!q.supported||state.artwork||state.foil==='ink'){renderQuote();return}$('#estimate-label').textContent='Updating estimate';$('#estimate-value').textContent='Calculating…';$('#estimate-caption').textContent='Materials and production labour';worker.postMessage({id:generation,request:q.request})}
 function renderQuote(error){const row=quote?.rows?.[0];if(row){$('#estimate-label').textContent='Workbook estimate · excl. tax';$('#estimate-value').textContent=euro(row.price_per_unit)+' / box';$('#estimate-caption').textContent=`${num(state.quantity)} pieces · ${euro(row.selling_total)} total`;
@@ -36,8 +45,10 @@ function change(key,value,{rebuild=true}={}){
  if(errors.length){if(proposal){$('#apply-ai').disabled=true;$('#ai-proposal-status').textContent='Correct the design and request a fresh preview.'}clearTimeout(quoteTimer);generation++;quote=null;renderQuote(errors[0]);$('#add-request').disabled=true;return false}
  state=next;lastValid=structuredClone(state);$('#add-request').disabled=Boolean(invalidFields.size);dirtySinceRequest=true;remember();renderInformation();
  all(`[data-key="${key}"]`).forEach(node=>{if(node!==document.activeElement)node.value=value});
- if(key==='opening')viewer?.setOpening(value);else if(key==='explode')viewer?.setExplode(value);else if(key==='dimensions')viewer?.setDimensions(value);else if(rebuild){clearTimeout(modelTimer);modelTimer=setTimeout(()=>viewer?.update(state),key==='logoScale'||key==='text'||key==='subtitle'?100:25)}
- if(!['opening','explode','dimensions'].includes(key)){clearTimeout(quoteTimer);quote=null;generation++;renderQuote();quoteTimer=setTimeout(calculateQuote,180)}
+ if(key==='opening')viewer?.setOpening(value);else if(key==='explode')viewer?.setExplode(value);else if(key==='dimensions')viewer?.setDimensions(value);else if(key==='light')viewer?.lighting(value);else if(key==='yaw'){
+  if(viewer){viewer.autoRotate=false;viewer.setYaw(value);$('#toggle-spin').setAttribute('aria-pressed','false')}
+ }else if(rebuild){clearTimeout(modelTimer);modelTimer=setTimeout(()=>viewer?.update(state),key==='logoScale'||key==='text'||key==='subtitle'?100:25)}
+ if(!previewOnly.has(key)){clearTimeout(quoteTimer);quote=null;generation++;renderQuote();quoteTimer=setTimeout(calculateQuote,180)}
  if(proposal){$('#apply-ai').disabled=true;$('#ai-proposal-status').textContent='Your design changed. Ask again for a fresh proposal.'}return true;
 }
 document.addEventListener('input',e=>{const n=e.target;if(!n.dataset.key)return;const k=n.dataset.key;const value=n.type==='number'||n.type==='range'||['board'].includes(k)?(n.value===''?null:Number(n.value)):n.value;change(k,value);if(k==='height'&&state.construction!=='magnetic'){const lid=$('[data-key="lidHeight"][type=range]');if(lid)lid.max=state.height}});
@@ -57,13 +68,44 @@ $('#open-close-box').onclick=()=>change('opening',state.opening>50?0:100);
 $('#viewport').addEventListener('lidtoggle',e=>change('opening',e.detail.opening));
 $('#viewport').addEventListener('partselect',e=>{const p=e.detail;$('#part-info').hidden=!p;if(p){$('#part-name').textContent=p.name;$('#part-size').textContent=p.size?p.size.map(v=>num(v)).join(' × ')+' mm board panel':'Artwork preview';$('#part-material').textContent=p.name.includes('Insert')?'Foam frame concept':materials[state.material].name+' · '+state.finish+' surface'}});
 $('#clear-part').onclick=()=>viewer?.clearSelection();
-all('[data-light]').forEach(b=>b.onclick=()=>{viewer?.lighting(b.dataset.light);$('.stage').classList.toggle('gallery-light',b.dataset.light==='night');all('[data-light]').forEach(n=>n.setAttribute('aria-pressed',n===b))});
-$('#material-closeup').onclick=()=>{change('opening',0);viewer?.closeup();$('#toggle-spin').setAttribute('aria-pressed',false);if(innerWidth<761)$('#viewport').scrollIntoView({block:'start',behavior:'smooth'})};
-$('#toggle-spin').onclick=()=>{if(!viewer)return;viewer.autoRotate=!viewer.autoRotate;$('#toggle-spin').setAttribute('aria-pressed',viewer.autoRotate)};
+all('[data-light]').forEach(button => button.onclick = () => change('light', button.dataset.light));
+$('#material-closeup').onclick=()=>{change('opening',0);if(viewer?.autoRotate)change('yaw',Math.round(viewer.currentYaw()));viewer?.closeup();$('#toggle-spin').setAttribute('aria-pressed',false);if(innerWidth<761)$('#viewport').scrollIntoView({block:'start',behavior:'smooth'})};
+$('#toggle-spin').onclick=()=>{if(!viewer)return;if(viewer.autoRotate){change('yaw',Math.round(viewer.currentYaw()));return}viewer.autoRotate=true;$('#toggle-spin').setAttribute('aria-pressed','true')};
 $('#snapshot').onclick=()=>{if(!viewer)return;const a=document.createElement('a');a.href=viewer.snapshot();a.download='VIA packaging design.png';a.click();toast('Design image exported.')};
 $('#export-toggle').onclick=()=>{const open=$('#export-menu').hidden;$('#export-menu').hidden=!open;$('#export-toggle').setAttribute('aria-expanded',open)};
 document.addEventListener('click',e=>{if(!e.target.closest('.view-toolbar')){$('#export-menu').hidden=true;$('#export-toggle').setAttribute('aria-expanded',false)}});
 $('#export-glb').onclick=async()=>{if(!viewer)return;const b=$('#export-glb');b.disabled=true;try{download('VIA packaging model.glb',await viewer.exportGLB(),'model/gltf-binary');toast('3D model exported with your current pose and materials.')}catch{toast('The 3D export could not finish. Please try again.')}finally{b.disabled=false}};
+function renderState() {
+  return {
+    ...state,
+    yaw: viewer?.currentYaw() ?? state.yaw,
+    opening: viewer ? viewer.currentOpen * 100 : state.opening,
+  };
+}
+$('#export-recipe').onclick = async () => {
+  if (invalidFields.size) { toast('Check your design dimensions first.'); return; }
+  const button = $('#export-recipe');
+  const design = renderState();
+  const camera = viewer?.cameraSpec();
+  const {artwork, ...configuration} = design;
+  button.disabled = true;
+  try {
+    const response = await fetch('../api/render-spec', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({configuration, hasArtwork: Boolean(artwork), camera}),
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!response.ok) throw Error('Backend render specification unavailable.');
+    download('VIA render specification.json', JSON.stringify(await response.json(), null, 2), 'application/json');
+    toast('Render specification exported.');
+  } catch {
+    download('VIA render specification.json', JSON.stringify(resolveRenderSpec(design, camera), null, 2), 'application/json');
+    toast('Render specification exported from this browser.');
+  } finally {
+    button.disabled = false;
+  }
+};
 let cadWorker,cadTimer;
 $('#export-step').onclick=()=>{if(validate(state).length)return;const button=$('#export-step');button.disabled=true;button.textContent='Preparing CAD geometry…';toast('Loading the CAD engine. The first export downloads about 22 MB.');
  const reset=()=>{button.disabled=false;button.textContent='CAD geometry · STEP';clearTimeout(cadTimer)};
@@ -80,7 +122,7 @@ $('#copy-share').onclick=async()=>{try{const url=await designLink(state,location
 $('#logo-file').onchange=async e=>{try{const file=e.target.files[0];if(!file)return;if(file.size>2000000||!['image/png','image/jpeg'].includes(file.type))throw Error('Choose a PNG or JPEG under 2 MB.');const image=await createImageBitmap(file);if(image.width*image.height>50000000){image.close();throw Error('The image resolution is too large.')}const scale=Math.min(1,1536/image.width,1536/image.height);const c=document.createElement('canvas');c.width=Math.max(1,Math.round(image.width*scale));c.height=Math.max(1,Math.round(image.height*scale));c.getContext('2d').drawImage(image,0,0,c.width,c.height);image.close();change('artwork',c.toDataURL('image/png'));$('#clear-logo').hidden=false;toast('Your artwork is on the box.')}catch(error){toast(error.message)}finally{e.target.value=''}};
 $('#clear-logo').onclick=()=>{change('artwork',null);$('#clear-logo').hidden=true};
 $('#play-opening').onclick=()=>{const button=$('#play-opening');if(button.dataset.playing){clearInterval(button.timer);delete button.dataset.playing;button.textContent='Play';return}button.dataset.playing='true';button.textContent='Pause';let phase=state.opening>=95?1:0;button.timer=setInterval(()=>{const n=phase===0?Math.min(100,state.opening+2):Math.max(0,state.opening-2);change('opening',n,{rebuild:false});if(n===100)phase=1;if(n===0&&phase===1){clearInterval(button.timer);delete button.dataset.playing;button.textContent='Play'}},45)};
-function addToRequest(){if(invalidFields.size||validate(state).length){toast('Check your design dimensions first.');return false}if(basket.length>=5){toast('Your request already contains five designs. Remove one to add another.');return false}let image='';try{image=viewer?.snapshot()||''}catch{}const item=brief(state,quote);item.id=crypto.randomUUID();item.image=image;basket.push(item);saveBasket();return true}
+function addToRequest(){if(invalidFields.size||validate(state).length){toast('Check your design dimensions first.');return false}if(basket.length>=5){toast('Your request already contains five designs. Remove one to add another.');return false}let image='';try{image=viewer?.snapshot()||''}catch{}const design=renderState();const item=brief(design,quote);item.render_spec=resolveRenderSpec(design,viewer?.cameraSpec());item.id=crypto.randomUUID();item.image=image;basket.push(item);saveBasket();return true}
 function saveBasket(){try{localStorage.setItem('via-studio-basket',JSON.stringify(basket))}catch{toast('The request is available in this session. Download it to keep your designs.')}renderInformation();renderBasket();$('#request-ready').hidden=true}
 function renderBasket(){$('#request-items').innerHTML=basket.length?basket.map(item=>`<article class="request-item">${item.image?`<img src="${esc(item.image)}" alt="Your box design">`:''}<div><h3>${esc(item.construction)}</h3><p>${item.configuration.length} × ${item.configuration.width} × ${item.configuration.height} mm · ${num(item.configuration.quantity)} pieces</p><p>${esc(materials[item.configuration.material].name)} · ${esc(item.configuration.foil)} branding</p></div><button data-remove="${esc(item.id)}" aria-label="Remove ${esc(item.construction)}">Remove</button></article>`).join(''):'<p class="request-empty">Add a design to begin your request.</p>';$('#prepare-request').disabled=!basket.length}
 $('#request-items').onclick=e=>{const id=e.target.closest('[data-remove]')?.dataset.remove;if(id){basket=basket.filter(x=>x.id!==id);saveBasket()}};

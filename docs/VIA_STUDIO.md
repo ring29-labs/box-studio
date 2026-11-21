@@ -25,7 +25,7 @@ The VIA logo and product-reference thumbnails are copied from those public VIA p
 
 | Layer | Choice | Why |
 | --- | --- | --- |
-| Live preview | Three.js 0.187 / WebGL 2 | Immediate dimension changes, orbit and zoom, paper bump textures, metallic foil, shadows and lid animations |
+| Live preview | Three.js 0.187 / WebGL 2 | Fixed softboxes, separate colour, normal and roughness maps, laminate, metallic foil, shadows and lid animations |
 | Shared geometry | `web/designer/model.js` | Millimetre panel dimensions, clearances and lid transforms used by preview, request packs and CAD export |
 | Exact CAD export | Replicad 1.2.1 / OpenCascade WebAssembly | STEP assemblies generated on the visitor's device, with named board parts in millimetres |
 | Costing | Existing Rust WebAssembly worker | Preserves the recovered material and labour formulas and existing integration rules |
@@ -37,6 +37,24 @@ The approximately 22 MB CAD kernel loads only when STEP export is requested. It 
 OpenCascade's generated JavaScript bindings use dynamic function generation. Only `/designer/cad-worker.js` receives a CSP allowing `unsafe-eval`; the parent application retains its existing CSP. That worker accepts validated numeric/configuration data, loads code and WASM only from the same origin, and does not execute user-supplied code. Replacing the kernel with a build using CSP-compatible embind dispatch would remove that exception.
 
 Official engine references: [Three.js](https://threejs.org/docs/pages/WebGLRenderer), [GLTFExporter](https://threejs.org/docs/pages/GLTFExporter.html), [Replicad](https://replicad.xyz/), [OpenCascade.js](https://github.com/donalffons/opencascade.js).
+
+### Studio rendering and artifacts
+
+The interactive viewer uses Three.js physical materials and prefiltered HDR lighting. Rotate box and Turntable move the product in studio coordinates. The key light and the reflection map stay fixed. Orbit moves the camera, which naturally changes the viewing angle and reflected highlight. The Studio, Daylight and Gallery buttons select distinct fixed light rigs.
+
+Seven reusable texture sets produce 21 PNG assets. The five paper profiles share fine-paper maps with the lining where appropriate. Each map set has neutral colour variation, tangent-space normals and glTF-compatible roughness. Tiles are scaled in millimetres so resizing a box does not stretch the grain. Gloss and soft-touch use a separate coating layer, and foil has a metallic response. The surface controls change the visual preview. Quote costing follows the specified paper and finish from the workbook.
+
+The maps are procedurally generated preview assets. Physical samples or supplier texture scans, measured gloss, and colour targets are needed for material approval. To integrate measured assets later, version the map paths and replace the corresponding preview profile with a sourced profile.
+
+| Engine | Fit for this workflow |
+| --- | --- |
+| [Three.js PBR](https://threejs.org/docs/pages/MeshPhysicalMaterial.html) and [PMREM](https://threejs.org/docs/pages/PMREMGenerator.html) | Chosen for the interactive designer. Separate coating parameters and filtered studio reflection maps cover the current requirement while preserving the viewer and GLB pipeline. |
+| [Babylon.js PBR](https://doc.babylonjs.com/features/featuresDeepDive/materials/using/introToPBR) or [Filament](https://github.com/google/filament) | Both support physically based studio materials. Switching would require porting interactions, exports and tests while keeping the same need for good maps and lighting. |
+| [three-gpu-pathtracer](https://gkjohnson.github.io/tools/docs/three-gpu-pathtracer/) or [Blender Cycles](https://www.blender.org/features/rendering/) | Candidates for a separate proof-render quality tier with light bounces and higher rendering cost. A worker or GPU render service would consume the render specification and produce approved stills. |
+
+GET `/api/render-spec` returns the versioned material and artifact catalogue, including URLs for the built texture maps. POST accepts a JSON object with `configuration` and optional `camera` (`position`, `target`, `fov`) and `hasArtwork`. It returns validated geometry, material settings, lighting and pose. Coordinates for camera and light positions are in metres, while board dimensions are in millimetres. The render specification is exported from the designer and embedded in GLB metadata and quote-request packs. Custom logo pixels are included only in the local design, rendered output and relevant browser exports.
+
+The browser produces PNG views, textured GLB, STEP and board-panel SVG. The backend resolves the JSON specification. The static catalogue supplies the texture maps. This integration is stateless and does not store uploads or run queued rendering jobs.
 
 ## ArtCraft and other tooling
 

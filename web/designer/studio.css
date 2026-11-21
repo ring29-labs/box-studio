@@ -12,3 +12,8 @@
 .share-dialog{border:0;border-radius:7px;padding:30px;width:560px;max-width:calc(100vw - 24px);box-shadow:0 12px 70px #2c192a30}.share-dialog .text-field{font-size:13px}.share-dialog textarea{font:11px/1.6 ui-monospace,monospace;width:100%;resize:vertical;padding:12px;border:1px solid #ded2d8;overflow-wrap:anywhere}.preset-links{display:flex;gap:20px;flex-wrap:wrap;border-top:1px solid #eee;padding-top:18px;margin-top:20px;font-size:12px;color:#8e3c54}.masthead nav>#share-top{display:inline-flex;font-weight:600;color:#8e283d}
 @media(max-width:760px){.masthead nav>#share-top{font-size:10px}.share-dialog{padding:23px}}
 .gallery-light .stage-heading h2{color:#f8f2f5}.gallery-light .stage-heading .eyebrow{color:#c6aeb9}.gallery-light .stage-heading p:last-child{color:#b9a9b2}.gallery-light .concept-tag{color:#d9cbd2;border-color:#71616b}.gallery-light .stage-caption,.gallery-light .stage-caption span:first-child{color:#d1c3ca}
+
+.render-controls{border:1px solid #e2dddd;border-radius:5px;padding:10px 14px 0;margin:18px 0}
+.render-controls legend{font-weight:600;font-size:13px;padding:0 6px}
+.render-controls output,.explode-field output{color:#8e283d;margin-left:6px;font-variant-numeric:tabular-nums}
+.render-controls .range-field span{display:flex;justify-content:space-between}

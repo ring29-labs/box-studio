@@ -10,14 +10,15 @@ export const materials={
  kraft:{name:'Natural kraft',paper:'Kraft rudas',texture:'kraft',roughness:1,description:'A natural fibre appearance.'},
  geltex:{name:'Geltex',paper:'Geltex 115 gsm',texture:'linen',roughness:.86,description:'A subtly textured decorative wrap.'}
 };
-export const defaults={name:'VIA Signature',construction:'magnetic',length:240,width:170,height:70,lidHeight:35,board:2,clearance:.7,neck:12,material:'colorplan',colour:'#652638',inside:'#e8dfcf',foil:'gold',finish:'matte',text:'VIA AQUARIA',subtitle:'PACKAGING YOUR IDEAS',logoScale:1,artwork:null,quantity:1000,hourly:22,margin:25,insert:'none',opening:0,explode:0,dimensions:false};
+export const defaults={name:'VIA Signature',construction:'magnetic',length:240,width:170,height:70,lidHeight:35,board:2,clearance:.7,neck:12,material:'colorplan',colour:'#652638',inside:'#e8dfcf',foil:'gold',finish:'matte',text:'VIA AQUARIA',subtitle:'PACKAGING YOUR IDEAS',logoScale:1,artwork:null,quantity:1000,hourly:22,margin:25,insert:'none',opening:0,explode:0,dimensions:false,light:'studio',yaw:0,gloss:50,grain:70};
 export const studioLooks={signature:{...defaults},nocturne:{...defaults,name:'Nocturne',construction:'lid-base',length:220,width:150,height:60,lidHeight:30,material:'wibalin',colour:'#1f2829',inside:'#eeeeea',foil:'silver'},botanical:{...defaults,name:'Botanical',construction:'shoulder',length:180,width:130,height:65,lidHeight:30,material:'colorplan',colour:'#1d4746',inside:'#b0916a',foil:'gold'}};
 export function validate(s){
  const errors=[];
  if(typeof s.name!=='string'||s.name.length<1||s.name.length>80)errors.push('Give the design a name of up to 80 characters.');
- for(const[k,min,max]of [['length',80,500],['width',60,400],['height',25,200],['lidHeight',10,200],['neck',5,30],['quantity',100,1000000],['hourly',1,1000],['margin',0,90],['opening',0,100],['explode',0,100],['logoScale',.4,1.6]])if(typeof s[k]!=='number'||!Number.isFinite(s[k])||s[k]<min||s[k]>max)errors.push(`${k} must be between ${min} and ${max}.`);
+ for(const[k,min,max]of [['length',80,500],['width',60,400],['height',25,200],['lidHeight',10,200],['neck',5,30],['quantity',100,1000000],['hourly',1,1000],['margin',0,90],['opening',0,100],['explode',0,100],['logoScale',.4,1.6],['yaw',-180,180],['gloss',0,100],['grain',0,100]])if(typeof s[k]!=='number'||!Number.isFinite(s[k])||s[k]<min||s[k]>max)errors.push(`${k} must be between ${min} and ${max}.`);
  for(const k of ['length','width','height','lidHeight','neck','quantity'])if(!Number.isInteger(s[k]))errors.push(`${k} must be a whole number.`);
- if(!constructions[s.construction])errors.push('Choose a supported construction.');if(!materials[s.material])errors.push('Choose a supported paper.');
+ if(!Object.hasOwn(constructions,s.construction))errors.push('Choose a supported construction.');if(!Object.hasOwn(materials,s.material))errors.push('Choose a supported paper.');
+ if(!['studio','daylight','night'].includes(s.light))errors.push('Choose a studio lighting preset.');
  if(![1.5,2,2.4,3].includes(s.board))errors.push('Choose a supported board thickness.');
  if(typeof s.clearance!=='number'||s.clearance<.3||s.clearance>2)errors.push('Fit clearance must be 0.3–2 mm.');
  if(s.lidHeight>s.height)errors.push('Lid height must not exceed the base height.');
